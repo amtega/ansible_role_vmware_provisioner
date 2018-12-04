@@ -1,2 +1,6 @@
 ---
 # Tasks for testing role
+
+- hosts: dev-ansible-0001
+  roles:
+    - amtega.vmware_provisioner
