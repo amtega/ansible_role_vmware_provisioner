@@ -1,0 +1,12 @@
+{% set ns = namespace(found=false) %}
+{% if vmware_provisioner_load_vms_from_hostvars %}
+{% for hostname in hostvars %}
+{% if hostvars[hostname].vmware_provisioner_vm is defined %}
+{% set ns.found = true %}
+- {{ hostvars[hostname].vmware_provisioner_vm | to_json }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if not ns.found %}
+[]
+{% endif %}

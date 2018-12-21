@@ -1,0 +1,93 @@
+---
+# Setup vmware vms asynchronously
+#
+# - block:
+#     - name: launch vagrant asynchronous virtual machines provisioning
+#       shell: >-
+#         sleep {{ (vm_state == "started")
+#                  | ternary(vagrant_provisioner_vms_interleave_time * vm.0,
+#                            0) }}s ;
+#         vagrant --machine-readable
+#         {{ (vm_state == "started")
+#            | ternary("up", "destroy --force") }} | tee -a vagrant.log
+#       args:
+#         chdir: "{{ vm_path }}"
+#         removes: "{{ (vm_state == 'absent') | ternary('Vagrantfile', '') }}"
+#       register: vagrant_provisioner_vms_async_result
+#       changed_when: no
+#       when: >-
+#         (vm_state == "started"
+#          and vagrant_facts.state | default('') != "started")
+#         or (vm_state == "absent" and vagrant_facts.vagrant_path is defined)
+#       loop: "{{ query('indexed_items', vagrant_provisioner_vms) }}"
+#       loop_control:
+#         label: "{{ vm.1.hostname}} {{ vm_state }}"
+#         loop_var: vm
+#       async: >-
+#         {{ vm.1.max_provisioning_time
+#            | default(vagrant_provisioner_vm_max_provisioning_time) }}
+#       poll: 0
+#       vars:
+#         vm_state: "{{ vm.1.state | default(vagrant_provisioner_vm_state) }}"
+#         vm_path: >-
+#           {{ vm.1.directory
+#              | default(vagrant_provisioner_vms_path | expanduser
+#              + "/"
+#              + vm.1.name) }}
+#         vagrant_facts_filtered: >-
+#           {{ vagrant_provisioner_vms_facts
+#              | selectattr("name", "equalto", vm.1.name)
+#              | list }}
+#         vagrant_facts: >-
+#           {{ (vagrant_facts_filtered | length > 0)
+#              | ternary(vagrant_facts_filtered | first, {}) }}
+#
+#     - name: wait for vagrant asynchronous virtual machines provisioning
+#       async_status:
+#         jid: "{{ async_item.ansible_job_id }}"
+#       when: async_item.ansible_job_id | default(0) > 0
+#       register: vagrant_provisioner_vms_setup_result
+#       changed_when:
+#         - vagrant_provisioner_vms_setup_result.rc | default(-1) == 0
+#         - >-
+#           (async_item.vm.1.state
+#            | default(vagrant_provisioner_vm_state) == "started"
+#            and ',action,up,start'
+#                in vagrant_provisioner_vms_setup_result.stdout | default([])
+#            and ',action,up,end'
+#                in vagrant_provisioner_vms_setup_result.stdout | default([]))
+#           or (async_item.vm.1.state
+#               | default(vagrant_provisioner_vm_state) == "absent"
+#               and vagrant_provisioner_vms_setup_result.stdout | default([])
+#                   is search("action,destroy,start")
+#               and vagrant_provisioner_vms_setup_result.stdout | default([])
+#                   is search("action,destroy,end")
+#               and not vagrant_provisioner_vms_setup_result.stdout | default([])
+#                   is search("Domain is not created"))
+#       failed_when:
+#           (async_item.vm.1.state
+#            | default(vagrant_provisioner_vm_state) == "started"
+#            and (',ui,error,'
+#                 in vagrant_provisioner_vms_setup_result.stdout | default([])
+#                 or vagrant_provisioner_vms_setup_result.rc | default(0) != 0
+#                 or ',action,up,end'
+#                    not in vagrant_provisioner_vms_setup_result.stdout
+#                           | default([])))
+#           or 'error-exit'
+#              in vagrant_provisioner_vms_setup_result.stdout | default([])
+#       loop: "{{ vagrant_provisioner_vms_async_result.results }}"
+#       loop_control:
+#         label: >-
+#           {{ async_item.vm.1.hostname
+#              + " "
+#              + async_item.vm.1.state | default(vagrant_provisioner_vm_state) }}
+#         loop_var: async_item
+#       until: vagrant_provisioner_vms_setup_result.finished
+#       retries: >-
+#         {{ (async_item.vm.max_provisioning_time
+#             | default(vagrant_provisioner_vm_max_provisioning_time)
+#             / vagrant_provisioner_vms_interleave_time) | int }}
+#       delay: "{{ vagrant_provisioner_vms_interleave_time }}"
+#   tags:
+#     - role::vagrant_provisioner
+#     - role::vagrant_provisioner::vms

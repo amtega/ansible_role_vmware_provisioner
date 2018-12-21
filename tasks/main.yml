@@ -1,46 +1,8 @@
 ---
 # Role tasks
 
-- block:
-    - name: create a virtual machine
-      vmware_guest:
-        hostname: dev-vmwaremanager-0001.xunta.local
-        username: "{{ ANSIBLE_USER }}@xunta.local"
-        password: "{{ ANSIBLE_PASSWORD }}"
-        validate_certs: no
-        datacenter: dc-vmware-0006
-        cluster: cls-vmware-0006
-        folder: /dev/Servidores Linux
-        name: dev-ansible-test-0001
-        state: present
-        guest_id: centos64Guest
-        disk:
-        - size_gb: 30
-          type: thin
-          datastore: stg-so-fc-gold-0001
-        hardware:
-          memory_mb: 512
-          num_cpus: 1
-          num_cpu_cores_per_socket: 1
-        networks:
-        - name: vlanSupportDevMANAGSRV1_1859
-          ip: 10.117.128.168
-          netmask: 255.255.224.0
-          device_type: vmxnet3
-        wait_for_ip_address: no
-        annotation: "ansible testing machine"
-      register: deploy_vm
-
-
-        # template: '{{ guest_template }}'
-
-        # customization:
-        #   dns_servers:
-        #   - '{{ guest_dns_server }}'
-        #   domain : '{{ guest_domain_name }}'
-        #   hostname: '{{ inventory_hostname }}'
-
-    - debug: var=deploy_vm
-
+- name: setup vmware virtual machines
+  include_tasks: vms.yml
   tags:
     - role::vmware_provisioner
+    - role::vmware_provisioner::vms

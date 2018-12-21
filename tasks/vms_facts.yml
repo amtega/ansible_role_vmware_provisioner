@@ -1,0 +1,29 @@
+---
+# Get current vmware vms facts
+
+- block:
+    - name: gather vmware virtual machines facts
+      vmware_vm_facts:
+        hostname: "{{ vmware_provisioner_hostname }}"
+        username: "{{ vmware_provisioner_username }}"
+        password: "{{ vmware_provisioner_password }}"
+        port: "{{ vmware_provisioner_port | default(omit) }}"
+        validate_certs: "{{ vmware_provisioner_validate_certs }}"
+        vm_type: all
+      register: vmware_provisioner_vms_facts
+
+    - name: gather vmware virtual machines defined in the inventory
+      include_role:
+        name: amtega.select_hostvars
+      vars:
+        select_hostvars_scope: all
+        select_hostvars_pattern: vmware_provisioner_vm
+        select_hostvars_attributes:
+          - name
+          - datacenter
+          - cluster
+        select_hostvars_fact_name: vmware_provisioner_inventory_vms
+        select_hostvars_output_type: list
+  tags:
+    - role::vagrant_provisioner
+    - role::vagrant_provisioner::facts

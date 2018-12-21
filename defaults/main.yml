@@ -1,2 +1,87 @@
 ---
 # Role default lower priority variables
+
+# vSphere vCenter or ESXi server connection settings
+
+vmware_provisioner_hostname:
+# vmware_provisioner_port: 443
+vmware_provisioner_username:
+vmware_provisioner_password:
+vmware_provisioner_validate_certs: yes
+
+# List of dicts with the virtual machines (vms) to provisione. The dicts must
+# have the following attributes, that have the same meaning as in the ansible
+# module `vmware_guest`:
+#
+# {
+#   annotation
+#   cdrom
+#   cluster
+#   customization
+#   customization_spec
+#   customvalues
+#   datacenter
+#   datastore
+#   disk
+#   esxi_hostname
+#   folder
+#   force
+#   guest_id
+#   hardware
+#   is_template
+#   linked_clone
+#   name
+#   name_match
+#   networks
+#   resource_pool
+#   snapshot_src
+#   state
+#   state_change_timeout
+#   template
+#   uuid
+#   vapp_properties
+#   wait_for_ip_address
+# }
+
+vmware_provisioner_vms: []
+
+# Indicate vms provisioning method. Can be asynchronous or sequential
+
+vmware_provisioner_vms_provisioning_method: asynchronous
+
+# Indicate if vms list to provisone should be completed with the config from any
+# host present in the ansible `hostvars` variable that contais a variable called
+# `vmware_vm`
+
+vmware_provisioner_load_vms_from_hostvars: yes
+
+# General vm options to apply if no other ones are specified in the specific
+# dictionary of the vmware_provisioner_vms variable.
+
+vmware_provisioner_vm_annotation: "Provisioned with ansible"
+vmware_provisioner_vm_cdrom: { 'type': none }
+vmware_provisioner_vm_cluster:
+vmware_provisioner_vm_customization: {}
+vmware_provisioner_vm_customization_spec:
+vmware_provisioner_vm_customvalues: []
+vmware_provisioner_vm_datacenter:
+vmware_provisioner_vm_datastore:
+vmware_provisioner_vm_disk: []
+vmware_provisioner_vm_esxi_hostname:
+vmware_provisioner_vm_folder:
+vmware_provisioner_vm_force: no
+vmware_provisioner_vm_guest_id:
+vmware_provisioner_vm_hardware: {}
+vmware_provisioner_vm_is_template: no
+vmware_provisioner_vm_linked_clone: no
+vmware_provisioner_vm_name:
+vmware_provisioner_vm_name_match: first
+vmware_provisioner_vm_networks: []
+vmware_provisioner_vm_resource_pool:
+vmware_provisioner_vm_snapshot_src:
+vmware_provisioner_vm_state: present
+vmware_provisioner_vm_state_change_timeout: 0
+vmware_provisioner_vm_template:
+vmware_provisioner_vm_uuid:
+vmware_provisioner_vm_vapp_properties: []
+vmware_provisioner_vm_wait_for_ip_address: no

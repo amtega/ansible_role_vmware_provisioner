@@ -1,0 +1,16 @@
+---
+# Setup vmware vms
+
+- block:
+    - name: gather vmware virtual machines facts
+      include_tasks: vms_facts.yml
+
+    - include_tasks: "{{ vmware_provisioner_vms_provisioning_include }}"
+      vars:
+        vmware_provisioner_vms_provisioning_include: >-
+          {{ (vmware_provisioner_vms_provisioning_method == "asynchronous")
+             | ternary("vms_asynchronous.yml",
+                       "vms_sequential.yml") }}
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms
