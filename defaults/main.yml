@@ -42,18 +42,20 @@ vmware_provisioner_validate_certs: yes
 #   vapp_properties
 #   wait_for_ip_address
 # }
+#
+# Complementary to the attributes detailed before you can setup virtual machine
+# custom attributes adding the following attribute to the previus dict:
+#
+# attributes:
+#   - name: <name of the attribute>
+#     value: <value of the attribute>
+#     state: <can be present or absent
 
 vmware_provisioner_vms: []
 
 # Indicate vms provisioning method. Can be asynchronous or sequential
 
 vmware_provisioner_vms_provisioning_method: asynchronous
-
-# Indicate if vms list to provisone should be completed with the config from any
-# host present in the ansible `hostvars` variable that contais a variable called
-# `vmware_vm`
-
-vmware_provisioner_load_vms_from_hostvars: yes
 
 # General vm options to apply if no other ones are specified in the specific
 # dictionary of the vmware_provisioner_vms variable.
@@ -85,3 +87,30 @@ vmware_provisioner_vm_template:
 vmware_provisioner_vm_uuid:
 vmware_provisioner_vm_vapp_properties: []
 vmware_provisioner_vm_wait_for_ip_address: no
+
+# Gather all virtual machine facts from vCenter or ESXi
+
+vmware_provisioner_gather_vm_facts: no
+
+# If the the value of the previous variable is yes, the role does not gather
+# vCenter or ESXi vm facts if this info is already in the play, but with the
+# foollowing variable it is possible to force it
+
+vmware_provisioner_gather_vm_facts_force: no
+
+# Setup fact with will a list of virtual machines configs defined in the
+# inventory from any host present in the ansible `hostvars` variable that
+# contais a variable called `vmware_vm`
+
+vmware_provisioner_gather_inventory_vm_configs: no
+
+# If the the value of the previous variable is yes, the role does not gather
+# inventory vm configs if this info is already in the play, but with the
+# foollowing variable it is possible to force it
+
+vmware_provisioner_gather_inventory_vm_configs_force: no
+
+# Indicate if vms list to manage should be completed with the virtual
+# machines configs gathered from inventory
+
+vmware_provisioner_manage_inventory_vms: no

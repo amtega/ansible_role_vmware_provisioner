@@ -2,17 +2,28 @@
 # Get current vmware vms facts
 
 - block:
-    - name: gather vmware virtual machines facts
-      vmware_vm_facts:
-        hostname: "{{ vmware_provisioner_hostname }}"
-        username: "{{ vmware_provisioner_username }}"
-        password: "{{ vmware_provisioner_password }}"
-        port: "{{ vmware_provisioner_port | default(omit) }}"
-        validate_certs: "{{ vmware_provisioner_validate_certs }}"
-        vm_type: all
-      register: vmware_provisioner_vms_facts
+    - block:
+        - name: gather vmware virtual machines facts from vCenter/ESXi
+          vmware_vm_facts:
+            hostname: "{{ vmware_provisioner_hostname }}"
+            username: "{{ vmware_provisioner_username }}"
+            password: "{{ vmware_provisioner_password }}"
+            port: "{{ vmware_provisioner_port | default(omit) }}"
+            validate_certs: "{{ vmware_provisioner_validate_certs }}"
+            vm_type: all
+          register: vmware_provisioner_vms_facts
 
-    - name: gather vmware virtual machines defined in the inventory
+        - name: setup fact with vmware virtual machines gathered facts
+          set_fact:
+            vmware_provisioner_vms_facts: >-
+              {{ vmware_provisioner_vms_facts.virtual_machines }}
+      when:
+        - vmware_provisioner_gather_vm_facts
+        - >-
+          vmware_provisioner_vms_facts is not defined
+          or vmware_provisioner_gather_vm_facts_force
+
+    - name: setup fact with vmware virtual machines configs in the inventory
       include_role:
         name: amtega.select_hostvars
       vars:
@@ -24,6 +35,11 @@
           - cluster
         select_hostvars_fact_name: vmware_provisioner_inventory_vms
         select_hostvars_output_type: list
+      when:
+        - vmware_provisioner_gather_inventory_vm_configs
+        - >-
+          vmware_provisioner_inventory_vms is not defined
+          or vmware_provisioner_gather_inventory_vm_configs_force
   tags:
     - role::vagrant_provisioner
     - role::vagrant_provisioner::facts
