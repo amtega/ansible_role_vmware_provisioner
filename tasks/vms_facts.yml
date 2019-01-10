@@ -11,12 +11,12 @@
             port: "{{ vmware_provisioner_port | default(omit) }}"
             validate_certs: "{{ vmware_provisioner_validate_certs }}"
             vm_type: all
-          register: vmware_provisioner_vms_facts
+          register: vmware_provisioner_vms_facts_result
 
         - name: setup fact with vmware virtual machines gathered facts
           set_fact:
             vmware_provisioner_vms_facts: >-
-              {{ vmware_provisioner_vms_facts.virtual_machines }}
+              {{ vmware_provisioner_vms_facts_result.virtual_machines }}
       when:
         - vmware_provisioner_gather_vm_facts
         - >-

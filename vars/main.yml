@@ -1,2 +1,7 @@
 ---
 # Role variables
+
+vmware_vms_to_manage: >-
+  {{ (vmware_provisioner_vms
+     + (vmware_provisioner_manage_inventory_vms)
+       | ternary(vmware_provisioner_inventory_vms | default([]), [])) }}

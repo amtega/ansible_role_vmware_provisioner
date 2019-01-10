@@ -4,12 +4,7 @@
 - block:
     - include_tasks: vms_facts.yml
 
-    - include_tasks: "{{ vmware_provisioner_vms_provisioning_include }}"
-      vars:
-        vmware_provisioner_vms_provisioning_include: >-
-          {{ (vmware_provisioner_vms_provisioning_method == "asynchronous")
-             | ternary("vms_asynchronous.yml",
-                       "vms_sequential.yml") }}
+    - include_tasks: "vms_{{ vmware_provisioner_vms_provisioning_method }}.yml"
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
