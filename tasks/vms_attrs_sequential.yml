@@ -38,6 +38,7 @@
       loop: >-
         {{ vmware_vms_to_manage
            | rejectattr("state", "equalto", "absent")
+           | rejectattr("attributes", "undefined")
            | list
            | subelements("attributes") }}
       loop_control:

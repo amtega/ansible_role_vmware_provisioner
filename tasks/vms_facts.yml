@@ -3,7 +3,7 @@
 
 - block:
     - block:
-        - name: gather vmware virtual machines facts from vCenter/ESXi
+        - name: gather basic vmware virtual machines facts from vCenter/ESXi
           vmware_vm_facts:
             hostname: "{{ vmware_provisioner_hostname }}"
             username: "{{ vmware_provisioner_username }}"
@@ -11,16 +11,18 @@
             port: "{{ vmware_provisioner_port | default(omit) }}"
             validate_certs: "{{ vmware_provisioner_validate_certs }}"
             vm_type: all
-          register: vmware_provisioner_vms_facts_result
+          register: vmware_provisioner_vms_basic_facts_result
 
-        - name: setup fact with vmware virtual machines gathered facts
+        - name: setup fact with vmware virtual machines gathered basic facts
           set_fact:
-            vmware_provisioner_vms_facts: >-
-              {{ vmware_provisioner_vms_facts_result.virtual_machines }}
+            vmware_provisioner_vms_basic_facts: >-
+              {{ vmware_provisioner_vms_basic_facts_result.virtual_machines }}
       when:
-        - vmware_provisioner_gather_vm_facts
         - >-
-          vmware_provisioner_vms_facts is not defined
+          vmware_provisioner_gather_basic_vm_facts
+          or vmware_provisioner_gather_detailed_vm_facts
+        - >-
+          vmware_provisioner_basic_vms_facts is not defined
           or vmware_provisioner_gather_vm_facts_force
 
     - name: setup fact with vmware virtual machines configs in the inventory
@@ -40,6 +42,47 @@
         - >-
           vmware_provisioner_inventory_vms is not defined
           or vmware_provisioner_gather_inventory_vm_configs_force
+
+    - block:
+        - name: gather detailed vmware virtual machines facts from vCenter/ESXi
+          vmware_guest_facts:
+            datacenter: >-
+              {{ vm.datacenter
+              | default(vmware_provisioner_vm_datacenter)
+              | default(omit, boolean=true) }}
+            folder: >-
+              {{ vm.folder
+              | default(vmware_provisioner_vm_folder)
+              | default(omit, boolean=true) }}
+            hostname: "{{ vmware_provisioner_hostname }}"
+            name: "{{ vm.name | default(vmware_provisioner_vm_name) }}"
+            username: "{{ vmware_provisioner_username }}"
+            password: "{{ vmware_provisioner_password }}"
+            port: "{{ vmware_provisioner_port | default(omit) }}"
+            uuid: >-
+              {{ vm.uuid
+              | default(vmware_provisioner_vm_uuid)
+              | default(omit, boolean=true) }}
+            validate_certs: "{{ vmware_provisioner_validate_certs }}"
+          when: vm.name in vmware_provisioner_vms_basic_facts.keys()
+          register: vmware_provisioner_vms_detailed_facts_result
+          loop: "{{ vmware_vms_to_gather_facts }}"
+          loop_control:
+            loop_var: vm
+            label: "{{ vm.name }}"
+
+        - name: setup fact with vmware virtual machines gathered detailed facts
+          set_fact:
+            vmware_provisioner_vms_detailed_facts: >-
+              {{ vmware_provisioner_vms_detailed_facts_result.results
+                 | selectattr("instance", "defined")
+                 | map(attribute="instance")
+                 | list }}
+      when:
+        - vmware_provisioner_gather_detailed_vm_facts
+        - >-
+          vmware_provisioner_vms_detailed_facts is not defined
+          or vmware_provisioner_gather_vm_facts_force
   tags:
     - role::vagrant_provisioner
     - role::vagrant_provisioner::facts

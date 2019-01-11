@@ -88,9 +88,15 @@ vmware_provisioner_vm_uuid:
 vmware_provisioner_vm_vapp_properties: []
 vmware_provisioner_vm_wait_for_ip_address: no
 
-# Gather all virtual machine facts from vCenter or ESXi
+# Gather all basic virtual machine facts from vCenter or ESXi
 
-vmware_provisioner_gather_vm_facts: no
+vmware_provisioner_gather_basic_vm_facts: no
+
+# Gather detailed virtual machine facts from vCenter or ESXi for the machines
+# listed in `vmware_provisioner_vms` variable that already exists. This take
+# more time
+
+vmware_provisioner_gather_detailed_vm_facts: no
 
 # If the the value of the previous variable is yes, the role does not gather
 # vCenter or ESXi vm facts if this info is already in the play, but with the

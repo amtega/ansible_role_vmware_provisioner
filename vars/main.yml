@@ -1,7 +1,17 @@
 ---
 # Role variables
 
+# vms to gather facts from
+
+vmware_vms_to_gather_facts: >-
+  {{ (vmware_provisioner_vms
+     + (vmware_provisioner_gather_inventory_vm_configs)
+       | ternary(vmware_provisioner_inventory_vms | default([]), [])) }}
+
+# vms to be managed
+
 vmware_vms_to_manage: >-
   {{ (vmware_provisioner_vms
-     + (vmware_provisioner_manage_inventory_vms)
+     + (vmware_provisioner_gather_inventory_vm_configs
+        and vmware_provisioner_manage_inventory_vms)
        | ternary(vmware_provisioner_inventory_vms | default([]), [])) }}
