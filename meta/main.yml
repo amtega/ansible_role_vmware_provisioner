@@ -4,33 +4,39 @@
 galaxy_info:
   role_name: vmware_provisioner
   author: Juan Antonio Valiño García
-  description: Setup vmware virtual machines
+  description: Setup VMware virtual machines
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
   min_ansible_version: 2.7
   platforms:
-  - name: Fedora
-    versions:
-      - 27
-      - 28
-  - name: EL
-    versions:
-      - 7
+    - name: EL
+      versions:
+        - 7
+    - name: Fedora
+      versions:
+        - 27
+        - 28
+
   galaxy_tags:
     - vmware
     - system
     - virtualization
 
 dependencies:
+  - role: amtega.check_platform
+    check_platform_distributions:
+      centos: 7
+      fedora: 27
+      rhel: 7
+
   - role: amtega.packages
     packages_os:
       all:
         all:
-          - name: python-pyvmomi
-            state: present
-
-          - name: python-requests
-            state: present
-
-          - name: python-urllib3
-            state: present
+          python-pyvmomi: present
+          python-urllib3: absent
+    python_os:
+      all:
+        all:
+          requests: latest
+          urllibb3: latest

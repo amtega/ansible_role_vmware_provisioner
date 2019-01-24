@@ -1,34 +1,52 @@
-# role_name
+# Ansible vmware_provisioner role
 
-A brief description of the role goes here.
+This is an [Ansible](http://www.ansible.com) role to setup VMware virtual machines.
 
 ## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+[Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
 
 ## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+A list of all the default variables for this role is available in `defaults/main.yml`. The role setups the following facts:
+
+- vmware_provisioner_vms_basic_facts: gathered virtual machines basic facts
+- vmware_provisioner_vms_detailed_facts: gathered virtual machines detailed facts
+- vmware_provisioner_inventory_vms: virtual machines configs foind in the inventory
 
 ## Dependencies
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- [amtega.check_platform](https://galaxy.ansible.com/amtega/check_platform)
+- [amtega.packages](https://galaxy.ansible.com/amtega/packages)
+- [amtega.select_hostvars](https://galaxy.ansible.com/amtega/select_hostvars)
 
 ## Example Playbook
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This is an example playbook:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+---
+
+- hosts: all
+  roles:
+    - amtega.vmware_provisioner
+```
 
 ## Testing
 
-A description of how to run tests of the role if available.
+To run test you must provide the connection options for an existing vCenter/ESXi
+(see `defaults/main.file` for details). One way to provide this information is
+calling the testing playbook passing an additional vault inventory plus the
+default one provided for testing, as it's show in this example:
+
+```shell
+$ cd amtega.vmware_provisioner/tests
+$ ansible-playbook main.yml -i inventory -i ~/mycustominventory.yml --vault-id myvault@prompt
+```
 
 ## License
 
-Copyright (C) <YEAR> AMTEGA - Xunta de Galicia
+Copyright (C) 2018 AMTEGA - Xunta de Galicia
 
 This role is free software: you can redistribute it and/or modify it under the terms of:
 
@@ -38,5 +56,5 @@ This role is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 
 ## Author Information
 
-- author_name 1.
-- author_name N.
+- Juan Antonio Valiño García.
+- This role is based on [geerlingguy.vmware_provisioner](https://galaxy.ansible.com/geerlingguy/vmware_provisioner) role.
