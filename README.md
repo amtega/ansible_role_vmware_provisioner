@@ -29,19 +29,48 @@ This is an example playbook:
 
 - hosts: all
   roles:
-    - amtega.vmware_provisioner
+    - role: amtega.vmware_provisioner
+      vmware_provisioner_hostname: vcenter.acme.com
+      vmware_provisioner_username: username
+      vmware_provisioner_password: password
+      vmware_provisioner_validate_certs: no
+      vmware_provisioner_testing_vms:
+        - name: "my_vm"
+          annotation: Ansible provisioned vm
+          folder: /
+          guest_id: centos7_64Guest
+          hardware:
+            memory_mb: 512
+            num_cpus: 1
+            num_cpu_cores_per_socket: 1
+          datacenter: dc
+          cluster: cluster
+          disk:
+            - size_gb: 30
+              type: thin
+              datastore: datastore            
+          wait_for_ip_address: no          
+          force: yes
 ```
 
 ## Testing
 
-To run test you must provide the connection options for an existing vCenter/ESXi
-(see `defaults/main.file` for details). One way to provide this information is
-calling the testing playbook passing an additional vault inventory plus the
-default one provided for testing, as it's show in this example:
+To run test you must point the variable `vmware_provisioner_tests_host` to a host that can be managed with ansible and that has access to an existing vCenter/ESXi.
+
+Also yo must provide the following minimim role variables (see `defaults/main.file` for details):
+
+- `vmware_provisioner_hostname`
+- `vmware_provisioner_username`
+- `vmware_provisioner_password`
+- `vmware_provisioner_vm_datacenter`
+- `vmware_provisioner_vm_cluster`
+- `vmware_provisioner_vm_disk`
+
+One way to provide this information is calling the testing playbook passing the host to use and an additional vault inventory plus the default one provided for testing, as it's show in this example:
 
 ```shell
 $ cd amtega.vmware_provisioner/tests
-$ ansible-playbook main.yml -i inventory -i ~/mycustominventory.yml --vault-id myvault@prompt
+$ ansible-playbook main.yml -e "vmware_provisioner_tests_host=test_host" -i inventory -i ~/mycustominventory.yml --vault-id myvault@prompt
 ```
 
 ## License

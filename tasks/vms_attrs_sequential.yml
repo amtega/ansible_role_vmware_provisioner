@@ -36,10 +36,17 @@
           {{ vmware_provisioner_validate_certs | default(omit) }}
       register: vmware_provisioner_vms_setup_attributes_result
       loop: >-
-        {{ vmware_vms_to_manage
-           | rejectattr("state", "equalto", "absent")
-           | rejectattr("attributes", "undefined")
-           | list
+        {{ (vmware_vms_to_manage
+            | selectattr("state", "defined")
+            | rejectattr("state", "equalto", "absent")
+            | rejectattr("attributes", "undefined")
+            | list
+            + (vmware_provisioner_vm_state != "absent")
+              | ternary(vmware_vms_to_manage
+                        | selectattr("state", "undefined")
+                        | rejectattr("attributes", "undefined")
+                        | list,
+                        []))
            | subelements("attributes") }}
       loop_control:
         loop_var: vm

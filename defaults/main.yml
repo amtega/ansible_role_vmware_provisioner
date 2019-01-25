@@ -53,15 +53,15 @@ vmware_provisioner_validate_certs: yes
 
 vmware_provisioner_vms: []
 
-# Indicate vms provisioning method. Can be asynchronous or sequential
+# Indicate vms provisioning method. Currently only sequential is implemented.
 
-vmware_provisioner_vms_provisioning_method: asynchronous
+vmware_provisioner_vms_provisioning_method: sequential
 
 # General vm options to apply if no other ones are specified in the specific
 # dictionary of the vmware_provisioner_vms variable.
 
 vmware_provisioner_vm_annotation: "Provisioned with ansible"
-vmware_provisioner_vm_cdrom: { 'type': none }
+vmware_provisioner_vm_cdrom: {'type': none}
 vmware_provisioner_vm_cluster:
 vmware_provisioner_vm_customization: {}
 vmware_provisioner_vm_customization_spec:

@@ -2,13 +2,14 @@
 # Tasks for testing role
 
 - name: prepare testing environment
-  hosts: localhost
+  hosts: "{{ vmware_provisioner_tests_host }}"
   tasks:
     - name: setup vmware_provisioner role config
       set_fact:
         vmware_provisioner_testing_vms:
           - name: "{{ vms_prefix }}1"
             annotation: Ansible role vmware_provisioner unit test vm 1
+            folder: /
             guest_id: centos7_64Guest
             hardware:
               memory_mb: 512
@@ -19,6 +20,7 @@
 
           - name: "{{ vms_prefix }}2"
             annotation: Ansible role vmware_provisioner unit test vm 1
+            folder: /
             guest_id: centos7_64Guest
             hardware:
               memory_mb: 512
@@ -30,16 +32,16 @@
     vms_prefix: vmware_provisioner_testing_vm
 
 - name: test vmware_provisioner role provisioning
-  hosts: localhost
+  hosts: "{{ vmware_provisioner_tests_host }}"
   roles:
     - role: amtega.vmware_provisioner
       vmware_provisioner_vm_state: present
       vmware_provisioner_vms: "{{ vmware_provisioner_testing_vms }}"
 
 - name: cleanup testing vms
-  hosts: localhost
+  hosts: "{{ vmware_provisioner_tests_host }}"
   roles:
-    - role: amtega.docker_sandbox
+    - role: amtega.vmware_provisioner
       vmware_provisioner_vm_state: absent
       vmware_provisioner_vms: "{{ vmware_provisioner_testing_vms }}"
   tags:
