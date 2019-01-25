@@ -1,0 +1,10 @@
+---
+# Setup vmware vms attributes
+
+- block:
+    - include_tasks: >-
+        vms_attrs_{{ vmware_provisioner_vms_provisioning_method }}.yml
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms
+    - role::vmware_provisioner::vms::attributes

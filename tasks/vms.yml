@@ -1,0 +1,18 @@
+---
+# Setup vmware vms
+
+- block:
+    - include_tasks: vms_facts.yml
+      when: >-
+        (vmware_provisioner_gather_inventory_vm_configs
+         and (vmware_provisioner_inventory_vms is not defined
+              or vmware_provisioner_gather_inventory_vm_configs_force))
+        or (vmware_provisioner_gather_detailed_vm_facts
+            and (vmware_provisioner_vms_detailed_facts is not defined
+                 or vmware_provisioner_gather_vm_facts_force))
+
+    - include_tasks: "vms_{{ vmware_provisioner_vms_provisioning_method }}.yml"
+      when: vmware_provisioner_vms | length > 0
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms

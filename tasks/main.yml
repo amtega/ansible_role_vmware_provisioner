@@ -1,2 +1,14 @@
 ---
 # Role tasks
+
+- name: setup vmware virtual machines
+  include_tasks: vms.yml
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms
+
+- name: setup vmware virtual machines attributes
+  include_tasks: vms_attrs.yml
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms::attributes
