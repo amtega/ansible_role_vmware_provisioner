@@ -12,7 +12,7 @@ A list of all the default variables for this role is available in `defaults/main
 
 - vmware_provisioner_vms_basic_facts: gathered virtual machines basic facts
 - vmware_provisioner_vms_detailed_facts: gathered virtual machines detailed facts
-- vmware_provisioner_inventory_vms: virtual machines configs foind in the inventory
+- vmware_provisioner_inventory_vms: virtual machines configs found in the inventory
 
 ## Dependencies
 
