@@ -25,24 +25,6 @@
           vmware_provisioner_basic_vms_facts is not defined
           or vmware_provisioner_gather_vm_facts_force
 
-    - name: setup fact with vmware virtual machines configs in the inventory
-      include_role:
-        name: amtega.select_hostvars
-      vars:
-        select_hostvars_scope: all
-        select_hostvars_pattern: vmware_provisioner_vm
-        select_hostvars_attributes:
-          - name
-          - datacenter
-          - cluster
-        select_hostvars_fact_name: vmware_provisioner_inventory_vms
-        select_hostvars_output_type: list
-      when:
-        - vmware_provisioner_gather_inventory_vm_configs
-        - >-
-          vmware_provisioner_inventory_vms is not defined
-          or vmware_provisioner_gather_inventory_vm_configs_force
-
     - block:
         - name: gather detailed vmware virtual machines facts from vCenter/ESXi
           vmware_guest_facts:

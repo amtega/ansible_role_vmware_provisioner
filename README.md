@@ -2,10 +2,6 @@
 
 This is an [Ansible](http://www.ansible.com) role to setup VMware virtual machines.
 
-## Requirements
-
-[Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
-
 ## Role Variables
 
 A list of all the default variables for this role is available in `defaults/main.yml`. The role setups the following facts:
@@ -13,12 +9,6 @@ A list of all the default variables for this role is available in `defaults/main
 - vmware_provisioner_vms_basic_facts: gathered virtual machines basic facts
 - vmware_provisioner_vms_detailed_facts: gathered virtual machines detailed facts
 - vmware_provisioner_inventory_vms: virtual machines configs found in the inventory
-
-## Dependencies
-
-- [amtega.check_platform](https://galaxy.ansible.com/amtega/check_platform)
-- [amtega.packages](https://galaxy.ansible.com/amtega/packages)
-- [amtega.select_hostvars](https://galaxy.ansible.com/amtega/select_hostvars)
 
 ## Example Playbook
 
@@ -75,7 +65,7 @@ $ ansible-playbook main.yml -e "vmware_provisioner_tests_host=test_host" -i inve
 
 ## License
 
-Copyright (C) 2018 AMTEGA - Xunta de Galicia
+Copyright (C) 2019 AMTEGA - Xunta de Galicia
 
 This role is free software: you can redistribute it and/or modify it under the terms of:
 
