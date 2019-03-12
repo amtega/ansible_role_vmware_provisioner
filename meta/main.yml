@@ -24,19 +24,44 @@ galaxy_info:
 
 dependencies:
   - role: amtega.check_platform
-    check_platform_distributions:
-      centos: 7
-      fedora: 27
-      rhel: 7
+    vars:
+      check_platform_distributions:
+        centos: 7
+        fedora: 27
+        rhel: 7
+    tags:
+      - role:: vmware_provisioner
 
   - role: amtega.packages
-    packages_os:
-      all:
+    vars:
+      packages_os:
         all:
-          python-pyvmomi: present
-          python-urllib3: absent
-    python_os:
-      all:
+          all:
+            python-pyvmomi: present
+            python-urllib3: absent
+      python_os:
         all:
-          requests: latest
-          urllibb3: latest
+          all:
+            requests: latest
+            urllibb3: latest
+    tags:
+      - role:: vmware_provisioner
+
+  - role: amtega.select_hostvars
+    vars:
+      select_hostvars_query:
+        scope: all
+        pattern: vmware_provisioner_vm
+        attributes:
+          - name
+          - datacenter
+          - cluster
+        fact_name: vmware_provisioner_inventory_vms
+        output_type: list
+    when:
+      - vmware_provisioner_gather_inventory_vm_configs
+      - >-
+        vmware_provisioner_inventory_vms is not defined
+        or vmware_provisioner_gather_inventory_vm_configs_force
+    tags:
+      - role:: vmware_provisioner
