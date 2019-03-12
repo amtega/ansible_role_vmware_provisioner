@@ -30,7 +30,7 @@ dependencies:
         fedora: 27
         rhel: 7
     tags:
-      - role:: vmware_provisioner
+      - role::vmware_provisioner
 
   - role: amtega.packages
     vars:
@@ -45,7 +45,7 @@ dependencies:
             requests: latest
             urllibb3: latest
     tags:
-      - role:: vmware_provisioner
+      - role::vmware_provisioner
 
   - role: amtega.select_hostvars
     vars:
@@ -64,4 +64,4 @@ dependencies:
         vmware_provisioner_inventory_vms is not defined
         or vmware_provisioner_gather_inventory_vm_configs_force
     tags:
-      - role:: vmware_provisioner
+      - role::vmware_provisioner
