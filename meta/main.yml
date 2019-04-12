@@ -43,7 +43,7 @@ dependencies:
         all:
           all:
             requests: latest
-            urllibb3: latest
+            urllib3: latest
     tags:
       - role::vmware_provisioner
 
