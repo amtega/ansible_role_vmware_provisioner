@@ -3,7 +3,7 @@
 
 - block:
     - block:
-        - name: gather basic vmware virtual machines facts from vCenter/ESXi
+        - name: Gather basic vmware virtual machines facts from vCenter/ESXi
           vmware_vm_facts:
             hostname: "{{ vmware_provisioner_hostname }}"
             username: "{{ vmware_provisioner_username }}"
@@ -26,7 +26,7 @@
           or vmware_provisioner_gather_vm_facts_force
 
     - block:
-        - name: gather detailed vmware virtual machines facts from vCenter/ESXi
+        - name: Gather detailed vmware virtual machines facts from vCenter/ESXi
           vmware_guest_facts:
             datacenter: >-
               {{ vm.datacenter
@@ -53,7 +53,7 @@
             loop_var: vm
             label: "{{ vm.name }}"
 
-        - name: setup fact with vmware virtual machines gathered detailed facts
+        - name: Setup fact with vmware virtual machines gathered detailed facts
           set_fact:
             vmware_provisioner_vms_detailed_facts: >-
               {{ vmware_provisioner_vms_detailed_facts_result.results

@@ -2,7 +2,7 @@
 # Setup vmware vms sequentiallly
 
 - block:
-    - name: sequential vmware virtual machines deploy
+    - name: Sequential vmware virtual machines deploy
       vmware_guest:
         annotation: >-
           {{ vm.annotation

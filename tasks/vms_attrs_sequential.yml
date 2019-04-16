@@ -2,7 +2,7 @@
 # Setup vmware vms attributes sequentiallly
 
 - block:
-    - name: sequential vmware virtual machines attributes setup
+    - name: Sequential vmware virtual machines attributes setup
       vmware_guest_custom_attributes:
         attributes:
           - name: "{{ vm.1.name }}"
