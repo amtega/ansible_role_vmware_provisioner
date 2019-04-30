@@ -37,9 +37,23 @@ dependencies:
       packages_os:
         all:
           all:
-            python-pyvmomi: present
+            python-requests: absent
+            python2-requests: absent
+            python3-requests: absent
             python-urllib3: absent
-      python_os:
+            python2-urllib3: absent
+            python3-urllib3: absent
+        centos:
+          all:
+            python-pyvmomi: present
+        fedora:
+          all:
+            python2-pyvmomi: present
+            python3-pyvmomi: present
+        rhel:
+          all:
+            python-pyvmomi: present
+      packages_python:
         all:
           all:
             requests: latest
