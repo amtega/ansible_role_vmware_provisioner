@@ -46,7 +46,10 @@
               | default(vmware_provisioner_vm_uuid)
               | default(omit, boolean=true) }}
             validate_certs: "{{ vmware_provisioner_validate_certs }}"
-          when: vm.name in vmware_provisioner_vms_basic_facts.keys() | list
+          when: >-
+            vm.name in vmware_provisioner_vms_basic_facts
+                       | map(attribute="guest_name")
+                       | list
           register: vmware_provisioner_vms_detailed_facts_result
           loop: "{{ vmware_vms_to_gather_facts }}"
           loop_control:
