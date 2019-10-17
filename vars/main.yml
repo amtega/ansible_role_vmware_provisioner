@@ -1,6 +1,10 @@
 ---
 # Role variables
 
+# Relative path within python site-packages where ansible vmware modules reside
+
+vmware_provisioner_modules_rel_dir: ansible/modules/cloud/vmware
+
 # vms to gather facts from
 
 vmware_vms_to_gather_facts: >-

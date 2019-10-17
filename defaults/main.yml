@@ -9,6 +9,10 @@ vmware_provisioner_username:
 vmware_provisioner_password:
 vmware_provisioner_validate_certs: yes
 
+# Patch ansible vmware modules
+
+vmware_provisioner_patch_ansible_modules: yes
+
 # List of dicts with the virtual machines (vms) to provisione. The dicts must
 # have the following attributes, that have the same meaning as in the ansible
 # module `vmware_guest`:

@@ -7,15 +7,15 @@ galaxy_info:
   description: Setup VMware virtual machines
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
-  min_ansible_version: 2.7
+  min_ansible_version: 2.8
   platforms:
     - name: EL
       versions:
         - 7
     - name: Fedora
       versions:
-        - 27
-        - 28
+        - 29
+        - 30
 
   galaxy_tags:
     - vmware
@@ -24,58 +24,13 @@ galaxy_info:
 
 dependencies:
   - role: amtega.check_platform
-    vars:
-      check_platform_distributions:
-        centos: 7
-        fedora: 27
-        rhel: 7
     tags:
-      - role::vmware_provisioner
+      - never
 
   - role: amtega.packages
-    vars:
-      packages_os:
-        all:
-          all:
-            python-requests: absent
-            python2-requests: absent
-            python3-requests: absent
-            python-urllib3: absent
-            python2-urllib3: absent
-            python3-urllib3: absent
-        centos:
-          all:
-            python-pyvmomi: present
-        fedora:
-          all:
-            python2-pyvmomi: present
-            python3-pyvmomi: present
-        rhel:
-          all:
-            python-pyvmomi: present
-      packages_python:
-        all:
-          all:
-            requests: latest
-            urllib3: latest
     tags:
-      - role::vmware_provisioner
+      - never
 
   - role: amtega.select_hostvars
-    vars:
-      select_hostvars_query:
-        scope: all
-        pattern: vmware_provisioner_vm
-        attributes:
-          - name
-          - datacenter
-          - cluster
-        fact_name: vmware_provisioner_inventory_vms
-        output_type: list
-    when:
-      - vmware_provisioner_gather_inventory_vm_configs
-      - >-
-        vmware_provisioner_inventory_vms is not defined
-        or vmware_provisioner_gather_inventory_vm_configs_force
     tags:
-      - role::vmware_provisioner
+      - never
