@@ -13,14 +13,6 @@
     name: amtega.packages
   vars:
     packages_os:
-      all:
-        all:
-          python-requests: absent
-          python2-requests: absent
-          python3-requests: absent
-          python-urllib3: absent
-          python2-urllib3: absent
-          python3-urllib3: absent
       centos:
         all:
           python-pyvmomi: present
