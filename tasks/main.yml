@@ -34,7 +34,7 @@
   vars:
     select_hostvars_query:
       scope: all
-      pattern: vmware_provisioner_vm
+      pattern: "^vmware_vm$"
       attributes:
         - name
         - datacenter
