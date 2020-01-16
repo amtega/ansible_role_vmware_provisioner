@@ -116,7 +116,7 @@ vmware_provisioner_gather_inventory_vm_configs: no
 
 # If the the value of the previous variable is yes, the role does not gather
 # inventory vm configs if this info is already in the play, but with the
-# foollowing variable it is possible to force it
+# following variable it is possible to force it
 
 vmware_provisioner_gather_inventory_vm_configs_force: no
 

@@ -16,7 +16,6 @@ galaxy_info:
       versions:
         - 29
         - 30
-
   galaxy_tags:
     - vmware
     - system
@@ -24,13 +23,44 @@ galaxy_info:
 
 dependencies:
   - role: amtega.check_platform
-    tags:
-      - never
+    vars:
+      check_platform_distributions:
+        centos: 7
+        fedora: 27
+        rhel: 7
 
   - role: amtega.packages
-    tags:
-      - never
+    vars:
+      packages_os:
+        centos:
+          all:
+            python-pyvmomi: present
+        fedora:
+          all:
+            python2-pyvmomi: present
+            python3-pyvmomi: present
+        rhel:
+          all:
+            python-pyvmomi: present
+      packages_python:
+        all:
+          all:
+            requests: latest
+            urllib3: latest
 
   - role: amtega.select_hostvars
-    tags:
-      - never
+    vars:
+      select_hostvars_query:
+        scope: all
+        pattern: "^vmware_vm$"
+        attributes:
+          - name
+          - datacenter
+          - cluster
+        fact_name: vmware_provisioner_inventory_vms
+        output_type: list
+    when:
+      - vmware_provisioner_gather_inventory_vm_configs
+      - >-
+        vmware_provisioner_inventory_vms is not defined
+        or vmware_provisioner_gather_inventory_vm_configs_force
