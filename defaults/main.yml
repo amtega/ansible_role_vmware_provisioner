@@ -124,3 +124,8 @@ vmware_provisioner_gather_inventory_vm_configs_force: no
 # machines configs gathered from inventory
 
 vmware_provisioner_manage_inventory_vms: no
+
+# Indicate if vm provisioning must be done or not. Setup to no if you only
+# want to gather facts
+
+vmware_provisioner_provisione: yes

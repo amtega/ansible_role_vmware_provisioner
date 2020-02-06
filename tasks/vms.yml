@@ -12,7 +12,9 @@
                  or vmware_provisioner_gather_vm_facts_force))
 
     - include_tasks: "vms_{{ vmware_provisioner_vms_provisioning_method }}.yml"
-      when: vmware_provisioner_vms | length > 0
+      when:
+        - vmware_provisioner_vms | length > 0
+        - vmware_provisioner_provisione | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
