@@ -1,6 +1,12 @@
 ---
 # Role tasks
 
+- name: Setup fact to optimize further runs
+  set_fact:
+    vmware_provisioner_deps_resolved: yes
+  tags:
+    - role::vmware_provisioner
+
 - name: Patch ansible vmware modules
   include_tasks: patch.yml
   when: vmware_provisioner_patch_ansible_modules
