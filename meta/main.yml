@@ -28,6 +28,7 @@ dependencies:
         centos: 7
         fedora: 27
         rhel: 7
+    when: not vmware_provisioner_deps_resolved | default(false)
 
   - role: amtega.packages
     vars:
@@ -47,6 +48,7 @@ dependencies:
           all:
             requests: latest
             urllib3: latest
+    when: not vmware_provisioner_deps_resolved | default(false)
 
   - role: amtega.select_hostvars
     vars:
@@ -64,3 +66,4 @@ dependencies:
       - >-
         vmware_provisioner_inventory_vms is not defined
         or vmware_provisioner_gather_inventory_vm_configs_force
+      - not vmware_provisioner_deps_resolved | default(false)
