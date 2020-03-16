@@ -4,7 +4,7 @@
 - block:
     - block:
         - name: Gather basic vmware virtual machines facts from vCenter/ESXi
-          vmware_vm_facts:
+          vmware_vm_info:
             hostname: "{{ vmware_provisioner_hostname }}"
             username: "{{ vmware_provisioner_username }}"
             password: "{{ vmware_provisioner_password }}"
@@ -27,7 +27,7 @@
 
     - block:
         - name: Gather detailed vmware virtual machines facts from vCenter/ESXi
-          vmware_guest_facts:
+          vmware_guest_info:
             datacenter: >-
               {{ vm.datacenter
               | default(vmware_provisioner_vm_datacenter)
