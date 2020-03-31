@@ -13,7 +13,7 @@
             vm_type: all
           register: vmware_provisioner_vms_basic_facts_result
 
-        - name: setup fact with vmware virtual machines gathered basic facts
+        - name: Setup fact with vmware virtual machines gathered basic facts
           set_fact:
             vmware_provisioner_vms_basic_facts: >-
               {{ vmware_provisioner_vms_basic_facts_result.virtual_machines }}

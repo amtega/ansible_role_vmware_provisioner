@@ -4,7 +4,7 @@
 - name: Prepare testing environment
   hosts: "{{ vmware_provisioner_tests_host }}"
   tasks:
-    - name: setup vmware_provisioner role config
+    - name: Setup vmware_provisioner role config
       set_fact:
         vmware_provisioner_testing_vms:
           - name: "{{ vms_prefix }}1"
