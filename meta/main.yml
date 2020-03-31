@@ -7,7 +7,7 @@ galaxy_info:
   description: Setup VMware virtual machines
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
-  min_ansible_version: 2.8
+  min_ansible_version: 2.9
   platforms:
     - name: EL
       versions:
@@ -26,7 +26,7 @@ dependencies:
     vars:
       check_platform_distributions:
         centos: 7
-        fedora: 27
+        fedora: 29
         rhel: 7
     when: not vmware_provisioner_deps_resolved | default(false)
 
