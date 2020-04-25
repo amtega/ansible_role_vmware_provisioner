@@ -14,6 +14,20 @@
     - role::vmware_provisioner
     - role::vmware_provisioner::patch
 
+- name: Gather vmware clusters facts
+  include_tasks: clusters_facts.yml
+  when: vmware_provisioner_clusters_facts is not defined
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::clusters
+
+- name: Gather vmware datastores facts
+  include_tasks: datastores_facts.yml
+  when: vmware_provisioner_datastores_facts_result is not defined
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::datastores
+
 - name: Setup vmware virtual machines
   include_tasks: vms.yml
   tags:
