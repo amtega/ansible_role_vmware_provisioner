@@ -6,9 +6,12 @@ This is an [Ansible](http://www.ansible.com) role to setup VMware virtual machin
 
 A list of all the default variables for this role is available in `defaults/main.yml`. The role setups the following facts:
 
-- vmware_provisioner_vms_basic_facts: gathered virtual machines basic facts
-- vmware_provisioner_vms_detailed_facts: gathered virtual machines detailed facts
-- vmware_provisioner_inventory_vms: virtual machines configs found in the inventory
+- `vmware_provisioner_datacenters_fact`: gathered datacenters fact
+- `vmware_provisioner_clusters_fact`: gathered clusters fact
+- `vmware_provisioner_datastores_fact`: gathered datastores fact
+- `vmware_provisioner_vms_basic_fact`: gathered virtual machines basic fact
+- `vmware_provisioner_vms_detailed_fact`: gathered virtual machines detailed fact
+- `vmware_provisioner_inventory_vms`: virtual machines configs found in the inventory
 
 ## Example Playbook
 

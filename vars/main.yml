@@ -5,9 +5,9 @@
 
 vmware_provisioner_modules_rel_dir: ansible/modules/cloud/vmware
 
-# vms to gather facts from
+# vms to gather fact from
 
-vmware_vms_to_gather_facts: >-
+vmware_vms_to_gather_fact: >-
   {{ (vmware_provisioner_vms
      + (vmware_provisioner_gather_inventory_vm_configs)
        | ternary(vmware_provisioner_inventory_vms | default([]), [])) }}
