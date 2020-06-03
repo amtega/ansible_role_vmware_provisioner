@@ -11,7 +11,14 @@
             and (vmware_provisioner_vms_detailed_fact is not defined
                  or vmware_provisioner_gather_vm_fact_force))
 
-    - include_tasks: "vms_{{ vmware_provisioner_vms_provisioning_method }}.yml"
+    - block:
+        - include_tasks: >-
+            vms_{{ vmware_provisioner_vms_provisioning_method }}.yml
+
+        - include_tasks: >-
+            vms_disks_{{ vmware_provisioner_vms_provisioning_method }}.yml
+          tags:
+            - role::vmware_provisioner::vms::disks
       when:
         - vmware_provisioner_vms | length > 0
         - vmware_provisioner_provisione | bool

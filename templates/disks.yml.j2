@@ -1,0 +1,17 @@
+{% for d in vm.disk | default(vmware_provisioner_vm_disk) %}
+{% set result = d %}
+{% if d.scsi_controller is undefined %}
+  {% set result = result | combine({"scsi_controller": 0}) %}
+{% endif %}
+{% if d.unit_number is undefined %}
+  {% set result = result | combine({"unit_number": loop.index0}) %}
+{% endif %}
+{% if d.state is undefined %}
+  {% if vm.state | default(vmware_provisioner_vm_state) != "absent" %}
+    {% set result = result | combine({"state": "present"}) %}
+  {% else %}
+    {% set result = result | combine({"state": "absent"}) %}
+  {% endif %}
+{% endif %}
+- {{ result | to_json }}
+{% endfor %}
