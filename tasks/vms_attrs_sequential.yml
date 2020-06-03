@@ -54,3 +54,4 @@
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
+    - role::vmware_provisioner::vms::attributes

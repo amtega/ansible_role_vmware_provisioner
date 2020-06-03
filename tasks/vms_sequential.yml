@@ -38,9 +38,9 @@
              | default(vmware_provisioner_vm_datastore)
              | default(omit, boolean=true) }}
         disk: >-
-          {{ vm.disk
-             | default(vmware_provisioner_vm_disk)
-             | default(omit, boolean=true) }}
+          {{ [ vm.disk
+               | default(vmware_provisioner_vm_disk)
+               | first ] }}
         esxi_hostname: >-
           {{ vm.esxi_hostname
              | default(vmware_provisioner_vm_esxi_hostname)

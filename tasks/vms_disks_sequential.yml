@@ -1,0 +1,48 @@
+---
+# Setup vmware vms disks sequentiallly
+
+- block:
+    - name: Sequential vmware virtual machines disks setup
+      vmware_guest_disk:
+        datacenter: >-
+          {{ vm.datacenter
+             | default(vmware_provisioner_vm_datacenter)
+             | default(omit, boolean=true) }}
+        disk: "{{ lookup('template', 'disks.yml.j2') | from_yaml }}"
+        folder: >-
+          {{ vm.folder
+             | default(vmware_provisioner_vm_folder)
+             | default(omit, boolean=true)  }}
+        hostname: >-
+          {{ vmware_provisioner_hostname }}
+        name: >-
+          {{ vm.name
+             | default(vmware_provisioner_vm_name)
+             | default(omit, boolean=true) }}
+        password: >-
+          {{ vmware_provisioner_password }}
+        port: >-
+          {{ vmware_provisioner_port | default(omit) }}
+        username: >-
+          {{ vmware_provisioner_username }}
+        uuid: >-
+          {{ vm.uuid
+             | default(vmware_provisioner_vm_uuid)
+             | default(omit, boolean=true) }}
+        validate_certs: >-
+          {{ vmware_provisioner_validate_certs | default(omit) }}
+      register: vmware_provisioner_vms_disks_setup_result
+      when: vm.state | default(vmware_provisioner_vm_state) != "absent"
+      loop: "{{ vmware_vms_to_manage }}"
+      loop_control:
+        loop_var: vm
+        index_var: vm_index
+        label: >-
+          {{ vm.name }}
+          {{ vm.state
+             | default(vmware_provisioner_vm_state)
+             | default(omit, boolean=true) }}
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms
+    - role::vmware_provisioner::vms::disks
