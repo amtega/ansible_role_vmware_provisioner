@@ -43,6 +43,12 @@ vmware_provisioner_validate_certs: yes
 #   wait_for_ip_address
 # }
 #
+# Regarding to the disk field before, it also  support the values detailed for
+# the disk parameter of the ansible vmware_guest_disk module. If for a disk
+# the field scsi_controller is not specified by default 0 will be used. If for
+# a disk the field unit_number is not specified by default the index number in
+# the list will be used (0 for the first, 1 for the second...)
+#
 # Complementary to the attributes detailed before you can setup virtual machine
 # custom attributes adding the following attribute to the previus dict:
 #
