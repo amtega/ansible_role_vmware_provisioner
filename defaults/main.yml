@@ -43,7 +43,7 @@ vmware_provisioner_validate_certs: yes
 #   wait_for_ip_address
 # }
 #
-# Regarding to the disk field before, it also  support the values detailed for
+# Regarding to the disk field before, it also support the values detailed for
 # the disk parameter of the ansible vmware_guest_disk module. If for a disk
 # the field scsi_controller is not specified by default 0 will be used. If for
 # a disk the field unit_number is not specified by default the index number in
@@ -94,21 +94,27 @@ vmware_provisioner_vm_uuid:
 vmware_provisioner_vm_vapp_properties: []
 vmware_provisioner_vm_wait_for_ip_address: no
 
-# Gather all basic virtual machine fact from vCenter or ESXi
+# Gather all basic virtual machine facts from vCenter or ESXi
 
-vmware_provisioner_gather_basic_vm_fact: no
-
-# Gather detailed virtual machine fact from vCenter or ESXi for the machines
-# listed in `vmware_provisioner_vms` variable that already exists. This take
-# more time
-
-vmware_provisioner_gather_detailed_vm_fact: no
+vmware_provisioner_gather_all_basic_vm_fact: no
 
 # If the the value of the previous variable is yes, the role does not gather
 # vCenter or ESXi vm fact if this info is already in the play, but with the
 # foollowing variable it is possible to force it
 
-vmware_provisioner_gather_vm_fact_force: no
+vmware_provisioner_gather_all_basic_vm_fact_force: no
+
+# Gather datacenters fact
+
+vmware_provisioner_gather_datacenters_fact: yes
+
+# Gather clusters fact
+
+vmware_provisioner_gather_clusters_fact: yes
+
+# Gather datastores fact
+
+vmware_provisioner_gather_datastores_fact: yes
 
 # Setup fact with will a list of virtual machines configs defined in the
 # inventory from any host present in the ansible `hostvars` variable that
