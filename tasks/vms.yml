@@ -2,7 +2,7 @@
 # Setup vmware vms
 
 - block:
-    - include_tasks: vms_fact.yml
+    - include_tasks: vms_fact_basic.yml
       when: >-
         vmware_provisioner_gather_all_basic_vm_fact | bool
         and (vmware_provisioner_basic_vms_fact is not defined
