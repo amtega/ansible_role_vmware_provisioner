@@ -37,10 +37,7 @@
           {{ vm.datastore
              | default(vmware_provisioner_vm_datastore)
              | default(omit, boolean=true) }}
-        disk: >-
-          {{ [ vm.disk
-               | default(vmware_provisioner_vm_disk)
-               | first ] }}
+        disk: "{{ vmware_provisioner_vm_disk_to_manage }}"
         esxi_hostname: >-
           {{ vm.esxi_hostname
              | default(vmware_provisioner_vm_esxi_hostname)
@@ -128,6 +125,36 @@
           {{ vm.state
              | default(vmware_provisioner_vm_state)
              | default(omit, boolean=true) }}
+      vars:
+        vmware_provisioner_vm_name_exists: >-
+          {{ vmware_provisioner_vms_detailed_fact
+             | selectattr("hw_name", "defined")
+             | selectattr("hw_name",
+                          "equalto",
+                          vm.name
+                          | default(vmware_provisioner_vm_name)
+                          | default(""))
+             | list
+             | length > 0 }}
+
+        vmware_provisioner_vm_uuid_exists: >-
+          {{ vmware_provisioner_vms_detailed_fact
+             | selectattr("instance_uuid", "defined")
+             | selectattr("instance_uuid",
+                          "equalto",
+                          vm.uuid
+                          | default(vmware_provisioner_vm_uuid)
+                          | default(""))
+             | list
+             | length > 0 }}
+
+        vmware_provisioner_vm_disk_to_manage: >-
+          {{ (vmware_provisioner_vm_name_exists | bool
+              or vmware_provisioner_vm_uuid_exists | bool)
+             | ternary(omit,
+                       [ vm.disk
+                         | default(vmware_provisioner_vm_disk)
+                         | first ]) }}
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms

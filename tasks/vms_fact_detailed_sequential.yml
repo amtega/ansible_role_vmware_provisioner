@@ -1,0 +1,41 @@
+---
+# Get detailed vmware vms info
+
+- block:
+    - name: Gather detailed vmware virtual machines fact from vCenter/ESXi
+      vmware_guest_info:
+        datacenter: >-
+          {{ vm.datacenter
+          | default(vmware_provisioner_vm_datacenter)
+          | default(omit, boolean=true) }}
+        folder: >-
+          {{ vm.folder
+          | default(vmware_provisioner_vm_folder)
+          | default(omit, boolean=true) }}
+        hostname: "{{ vmware_provisioner_hostname }}"
+        name: "{{ vm.name | default(vmware_provisioner_vm_name) }}"
+        username: "{{ vmware_provisioner_username }}"
+        password: "{{ vmware_provisioner_password }}"
+        port: "{{ vmware_provisioner_port | default(omit) }}"
+        uuid: >-
+          {{ vm.uuid
+          | default(vmware_provisioner_vm_uuid)
+          | default(omit, boolean=true) }}
+        validate_certs: "{{ vmware_provisioner_validate_certs }}"
+      register: vmware_provisioner_vms_detailed_fact_result
+      failed_when: no
+      loop: "{{ vmware_vms_to_manage }}"
+      loop_control:
+        loop_var: vm
+        label: "{{ vm.name }}"
+
+    - name: Setup fact with vmware virtual machines gathered detailed fact
+      set_fact:
+        vmware_provisioner_vms_detailed_fact: >-
+          {{ vmware_provisioner_vms_detailed_fact_result.results
+             | selectattr("instance", "defined")
+             | map(attribute="instance")
+             | list }}
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms

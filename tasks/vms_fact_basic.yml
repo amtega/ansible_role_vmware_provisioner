@@ -1,0 +1,21 @@
+---
+# Get current vmware vms fact
+
+- block:
+    - name: Gather basic vmware virtual machines fact from vCenter/ESXi
+      vmware_vm_info:
+        hostname: "{{ vmware_provisioner_hostname }}"
+        username: "{{ vmware_provisioner_username }}"
+        password: "{{ vmware_provisioner_password }}"
+        port: "{{ vmware_provisioner_port | default(omit) }}"
+        validate_certs: "{{ vmware_provisioner_validate_certs }}"
+        vm_type: all
+      register: vmware_provisioner_vms_basic_fact_result
+
+    - name: Setup fact with vmware virtual machines gathered basic fact
+      set_fact:
+        vmware_provisioner_vms_basic_fact: >-
+          {{ vmware_provisioner_vms_basic_fact_result.virtual_machines }}
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::vms

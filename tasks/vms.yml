@@ -2,14 +2,15 @@
 # Setup vmware vms
 
 - block:
-    - include_tasks: vms_fact.yml
+    - include_tasks: vms_fact_basic.yml
       when: >-
-        (vmware_provisioner_gather_inventory_vm_configs
-         and (vmware_provisioner_inventory_vms is not defined
-              or vmware_provisioner_gather_inventory_vm_configs_force))
-        or (vmware_provisioner_gather_detailed_vm_fact
-            and (vmware_provisioner_vms_detailed_fact is not defined
-                 or vmware_provisioner_gather_vm_fact_force))
+        vmware_provisioner_gather_all_basic_vm_fact | bool
+        and (vmware_provisioner_basic_vms_fact is not defined
+             or vmware_provisioner_gather_all_basic_vm_fact_force | bool)
+
+    - include_tasks: >-
+        vms_fact_detailed_{{ vmware_provisioner_vms_provisioning_method }}.yml
+      when: vmware_provisioner_vms | length > 0
 
     - block:
         - include_tasks: >-
