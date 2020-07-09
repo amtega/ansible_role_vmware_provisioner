@@ -27,7 +27,7 @@ dependencies:
       check_platform_distributions:
         centos: 7
         fedora: 29
-        rhel: 7
+        redhat: 7
     when: not vmware_provisioner_deps_resolved | default(false)
 
   - role: amtega.packages
@@ -40,7 +40,7 @@ dependencies:
           all:
             python2-pyvmomi: present
             python3-pyvmomi: present
-        rhel:
+        redhat:
           all:
             python-pyvmomi: present
       packages_python:

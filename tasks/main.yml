@@ -35,6 +35,15 @@
     - role::vmware_provisioner
     - role::vmware_provisioner::datastores
 
+- include_tasks: folders_fact.yml
+  when:
+    - vmware_provisioner_gather_datacenters_fact | bool
+    - vmware_provisioner_gather_folders_fact | bool
+    - vmware_provisioner_folders_fact is not defined
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::foders
+
 - include_tasks: vms.yml
   tags:
     - role::vmware_provisioner

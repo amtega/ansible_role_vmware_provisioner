@@ -1,0 +1,30 @@
+---
+# Get datastores fact
+
+- block:
+    - name: Gather vmware folders from vCenter/ESXi
+      vmware_folder_info:
+        datacenter: "{{ vmware_provisioner_datacenter_item }}"
+        hostname: "{{ vmware_provisioner_hostname }}"
+        username: "{{ vmware_provisioner_username }}"
+        password: "{{ vmware_provisioner_password }}"
+        port: "{{ vmware_provisioner_port | default(omit) }}"
+        validate_certs: "{{ vmware_provisioner_validate_certs }}"
+      register: vmware_provisioner_folders_result
+      loop: >-
+        {{ vmware_provisioner_datacenters_fact
+           | map(attribute="name")
+           | list }}
+      loop_control:
+        loop_var: vmware_provisioner_datacenter_item
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
+
+    - name: Setup fact with vmware folders
+      set_fact:
+        vmware_provisioner_folders_fact: >-
+          {{ lookup("template", "folders.yml.j2") | from_yaml }}
+
+  when: vmware_provisioner_folders_fact is not defined
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::folders

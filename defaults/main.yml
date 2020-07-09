@@ -116,6 +116,10 @@ vmware_provisioner_gather_clusters_fact: yes
 
 vmware_provisioner_gather_datastores_fact: yes
 
+# Gather folders fact
+
+vmware_provisioner_gather_folders_fact: yes
+
 # Setup fact with will a list of virtual machines configs defined in the
 # inventory from any host present in the ansible `hostvars` variable that
 # contais a variable called `vmware_vm`
