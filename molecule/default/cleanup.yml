@@ -1,0 +1,9 @@
+---
+
+- name: Cleanup
+  hosts: molecule_hosts
+  gather_facts: no
+  roles:
+    - role: amtega.vmware_provisioner
+      vars:
+        vmware_provisioner_vm_state: absent

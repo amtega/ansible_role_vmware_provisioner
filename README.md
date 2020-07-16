@@ -48,9 +48,16 @@ This is an example playbook:
 
 ## Testing
 
-To run test you must point the variable `vmware_provisioner_tests_host` to a host that can be managed with ansible and that has access to an existing vCenter.
+Tests are based on [molecule with docker containers](https://molecule.readthedocs.io/en/latest/installation.html).
 
-Also yo must provide the following minimim role variables (see `defaults/main.file` for details):
+To run test you must point the environment variable `VMWARE_PROVISIONER_TEST_HOST` to a host that can be managed with ansible and that has access to an existing vCenter.
+
+Also, to run test you need provide the some role variables. One way to provide this information is calling the testing playbook passing an additional inventory using the following environment variables:
+
+- `ANSIBLE_INVENTORY`: path to an inventory
+- `ANSIBLE_VAULT_PASSWORD_FILE`: path to the file containing the vault password required for the previous inventory
+
+The minimum variables required in the testing inventory are (see `defaults/main.file` for details):
 
 - `vmware_provisioner_hostname`
 - `vmware_provisioner_username`
@@ -59,16 +66,16 @@ Also yo must provide the following minimim role variables (see `defaults/main.fi
 - `vmware_provisioner_vm_cluster`
 - `vmware_provisioner_vm_disk`
 
-One way to provide this information is calling the testing playbook passing the host to use and an additional vault inventory plus the default one provided for testing, as it's show in this example:
 
 ```shell
-$ cd amtega.vmware_provisioner/tests
-$ ansible-playbook main.yml -e "vmware_provisioner_tests_host=test_host" -i inventory -i ~/mycustominventory.yml --vault-id myvault@prompt
+cd amtega.vmware_provisioner
+
+VMWARE_PROVISIONER_TEST_HOST=myhost ANSIBLE_INVENTORY=~/myinventory ANSIBLE_VAULT_PASSWORD_FILE=~/myvaultpassword molecule test --all
 ```
 
 ## License
 
-Copyright (C) 2019 AMTEGA - Xunta de Galicia
+Copyright (C) 2020 AMTEGA - Xunta de Galicia
 
 This role is free software: you can redistribute it and/or modify it under the terms of:
 
