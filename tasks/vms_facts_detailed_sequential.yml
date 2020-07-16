@@ -2,7 +2,7 @@
 # Get detailed vmware vms info
 
 - block:
-    - name: Gather detailed vmware virtual machines fact from vCenter/ESXi
+    - name: Gather detailed vmware virtual machines fact from vCenter
       vmware_guest_info:
         datacenter: >-
           {{ vm.datacenter
@@ -22,7 +22,7 @@
           | default(vmware_provisioner_vm_uuid)
           | default(omit, boolean=true) }}
         validate_certs: "{{ vmware_provisioner_validate_certs }}"
-      register: vmware_provisioner_vms_detailed_fact_result
+      register: vmware_provisioner_vms_detailed_facts_result
       failed_when: no
       loop: "{{ vmware_vms_to_manage }}"
       loop_control:
@@ -31,8 +31,8 @@
 
     - name: Setup fact with vmware virtual machines gathered detailed fact
       set_fact:
-        vmware_provisioner_vms_detailed_fact: >-
-          {{ vmware_provisioner_vms_detailed_fact_result.results
+        vmware_provisioner_vms_detailed_facts: >-
+          {{ vmware_provisioner_vms_detailed_facts_result.results
              | selectattr("instance", "defined")
              | map(attribute="instance")
              | list }}

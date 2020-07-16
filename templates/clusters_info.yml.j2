@@ -1,0 +1,23 @@
+{% set ns = namespace(found=false) %}
+
+{% for r in vmware_provisioner_clusters_result.results %}
+{% set datacenter_dict = {"datacenter": r.vmware_provisioner_datacenter.name} %}
+{% for c in r.json.value %}
+{% if vmware_provisioner_host_config_info_result is defined %}
+{% set hosts = (vmware_provisioner_host_config_info_result.results
+                | selectattr("vmware_provisioner_cluster.1.name",
+                             "equalto",
+                             c.name)
+                | list
+                | first).hosts %}
+- {{ c | combine(datacenter_dict) | combine({"hosts": hosts}) | to_json }}
+{% else %}
+- {{ c | combine(datacenter_dict) | to_json }}
+{% endif %}
+{% set ns.found = true %}
+{% endfor %}
+{% endfor %}
+
+{% if not ns.found %}
+[]
+{% endif %}

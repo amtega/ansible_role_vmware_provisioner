@@ -1,3 +1,0 @@
-{% for result in vmware_provisioner_folders_result.results %}
-{{ result.vmware_provisioner_datacenter_item }}: {{ result.folder_info | to_json }}
-{% endfor %}

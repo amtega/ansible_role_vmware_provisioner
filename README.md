@@ -6,11 +6,11 @@ This is an [Ansible](http://www.ansible.com) role to setup VMware virtual machin
 
 A list of all the default variables for this role is available in `defaults/main.yml`. The role setups the following facts:
 
-- `vmware_provisioner_datacenters_fact`: gathered datacenters fact
-- `vmware_provisioner_clusters_fact`: gathered clusters fact
-- `vmware_provisioner_datastores_fact`: gathered datastores fact
-- `vmware_provisioner_vms_basic_fact`: gathered virtual machines basic fact
-- `vmware_provisioner_vms_detailed_fact`: gathered virtual machines detailed fact
+- `vmware_provisioner_datacenters_info`: gathered datacenters info
+- `vmware_provisioner_clusters_info`: gathered clusters info
+- `vmware_provisioner_datastores_info`: gathered datastores info
+- `vmware_provisioner_vms_basic_facts`: gathered virtual machines basic facts
+- `vmware_provisioner_vms_detailed_facts`: gathered virtual machines detailed facts
 - `vmware_provisioner_inventory_vms`: virtual machines configs found in the inventory
 
 ## Example Playbook
@@ -48,7 +48,7 @@ This is an example playbook:
 
 ## Testing
 
-To run test you must point the variable `vmware_provisioner_tests_host` to a host that can be managed with ansible and that has access to an existing vCenter/ESXi.
+To run test you must point the variable `vmware_provisioner_tests_host` to a host that can be managed with ansible and that has access to an existing vCenter.
 
 Also yo must provide the following minimim role variables (see `defaults/main.file` for details):
 
