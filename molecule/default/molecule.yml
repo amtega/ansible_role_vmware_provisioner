@@ -6,6 +6,8 @@ driver:
   name: delegated
   options:
     managed: False
+    ansible_connection_options:
+      ansible_connection: local
 lint: |
   set -e
   export ANSIBLE_ACTION_PLUGINS=$PWD/action_plugins

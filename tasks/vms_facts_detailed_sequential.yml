@@ -2,7 +2,7 @@
 # Get detailed vmware vms info
 
 - block:
-    - name: Gather detailed vmware virtual machines fact from vCenter
+    - name: Gather detailed vmware virtual machines facts from vCenter
       vmware_guest_info:
         datacenter: >-
           {{ vm.datacenter

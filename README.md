@@ -66,7 +66,6 @@ The minimum variables required in the testing inventory are (see `defaults/main.
 - `vmware_provisioner_vm_cluster`
 - `vmware_provisioner_vm_disk`
 
-
 ```shell
 cd amtega.vmware_provisioner
 

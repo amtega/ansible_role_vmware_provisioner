@@ -5,7 +5,7 @@
     - include_tasks: vms_facts_basic.yml
       when: >-
         vmware_provisioner_gather_all_basic_vm_facts | bool
-        and (vmware_provisioner_basic_vms_fact is not defined
+        and (vmware_provisioner_vms_basic_facts is not defined
              or vmware_provisioner_gather_all_basic_vm_facts_force | bool)
 
     - include_tasks: >-
