@@ -1,0 +1,56 @@
+---
+# Get clusters info
+
+- block:
+    - name: Gather vmware clusters info from vCenter
+      uri:
+        url: >-
+          https://{{ vmware_provisioner_hostname }}/rest/vcenter/cluster
+        method: GET
+        headers:
+          vmware-api-session-id: "{{ vmware_provisioner_session_id }}"
+        body_format: json
+        body:
+          filter:
+            datacenters:
+              - "{{ vmware_provisioner_datacenter.datacenter }}"
+        status_code: 200
+        return_content: yes
+        validate_certs: "{{ vmware_provisioner_validate_certs }}"
+      register: vmware_provisioner_clusters_result
+      loop: "{{ vmware_provisioner_datacenters_info }}"
+      loop_control:
+        loop_var: vmware_provisioner_datacenter
+        label: "{{ vmware_provisioner_datacenter.name }}"
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
+
+    - name: Gather vmware cluster hosts from vCenter
+      _vmware_provisioner_cluster_hosts:
+        datacenter_name: >-
+          {{ vmware_provisioner_cluster.0.vmware_provisioner_datacenter.name }}
+        cluster_name: "{{ vmware_provisioner_cluster.1.name }}"
+        hostname: "{{ vmware_provisioner_hostname }}"
+        username: "{{ vmware_provisioner_username }}"
+        password: "{{ vmware_provisioner_password }}"
+        port: "{{ vmware_provisioner_port | default(omit) }}"
+        validate_certs: "{{ vmware_provisioner_validate_certs }}"
+      register: vmware_provisioner_host_config_info_result
+      loop: >-
+        {{ lookup("subelements",
+                  vmware_provisioner_clusters_result.results,
+                  "json.value",
+                  skip_missing=true) }}
+      loop_control:
+        loop_var: vmware_provisioner_cluster
+        label: "{{ vmware_provisioner_cluster.1.name }}"
+      ignore_errors: yes
+
+    - name: Setup fact with vmware clusters
+      set_fact:
+        vmware_provisioner_clusters_info: >-
+          {{ lookup("template", "clusters_info.yml.j2") | from_yaml }}
+
+  when: vmware_provisioner_clusters_info is not defined
+  tags:
+    - role::vmware_provisioner
+    - role::vmware_provisioner::clusters

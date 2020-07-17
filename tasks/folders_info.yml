@@ -1,8 +1,8 @@
 ---
-# Get datastores fact
+# Get datastores info
 
 - block:
-    - name: Gather vmware folders from vCenter/ESXi
+    - name: Gather vmware folders info from vCenter
       vmware_folder_info:
         datacenter: "{{ vmware_provisioner_datacenter_item }}"
         hostname: "{{ vmware_provisioner_hostname }}"
@@ -12,7 +12,7 @@
         validate_certs: "{{ vmware_provisioner_validate_certs }}"
       register: vmware_provisioner_folders_result
       loop: >-
-        {{ vmware_provisioner_datacenters_fact
+        {{ vmware_provisioner_datacenters_info
            | map(attribute="name")
            | list }}
       loop_control:
@@ -21,10 +21,10 @@
 
     - name: Setup fact with vmware folders
       set_fact:
-        vmware_provisioner_folders_fact: >-
-          {{ lookup("template", "folders.yml.j2") | from_yaml }}
+        vmware_provisioner_folders_info: >-
+          {{ lookup("template", "folders_info.yml.j2") | from_yaml }}
 
-  when: vmware_provisioner_folders_fact is not defined
+  when: vmware_provisioner_folders_info is not defined
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::folders

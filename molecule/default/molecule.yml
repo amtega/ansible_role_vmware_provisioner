@@ -1,0 +1,72 @@
+---
+
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+  options:
+    managed: False
+    ansible_connection_options:
+      ansible_connection: local
+lint: |
+  set -e
+  export ANSIBLE_ACTION_PLUGINS=$PWD/action_plugins
+  export ANSIBLE_BECOME_PLUGINS=$PWD/become_plugins
+  export ANSIBLE_CACHE_PLUGINS=$PWD/cache_plugins
+  export ANSIBLE_CALLBACK_PLUGINS=$PWD/callback_plugins
+  export ANSIBLE_CLICONF_PLUGINS=$PWD/cliconf_plugins
+  export ANSIBLE_CONNECTION_PLUGINS=$PWD/connection_plugins
+  export ANSIBLE_DOC_FRAGMENT_PLUGINS=$PWD/doc_fragment_plugins
+  export ANSIBLE_FILTER_PLUGINS=$PWD/filter_plugins
+  export ANSIBLE_HTTPAPI_PLUGINS=$PWD/httpapi_plugins
+  export ANSIBLE_INVENTORY_PLUGINS=$PWD/inventory_plugins
+  export ANSIBLE_LIBRARY=$PWD/library
+  export ANSIBLE_LOOKUP_PLUGINS=$PWD/lookup_plugins
+  export ANSIBLE_NETCONF_PLUGINS=$PWD/netconf_plugins
+  export ANSIBLE_STRATEGY_PLUGINS=$PWD/strategy_plugins
+  export ANSIBLE_TERMINAL_PLUGINS=$PWD/terminal_plugins
+  export ANSIBLE_TEST_PLUGINS=$PWD/test_plugins
+  export ANSIBLE_VARS_PLUGINS=$PWD/vars_plugins
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: dummy
+provisioner:
+  name: ansible
+  ansible_args:
+    - --inventory=${ANSIBLE_INVENTORY}
+    - --vault-password-file=${ANSIBLE_VAULT_PASSWORD_FILE:-/etc/hostname}
+  config_options:
+    defaults:
+      callback_whitelist: profile_tasks
+      action_plugins: $PWD/action_plugins
+  inventory:
+    hosts:
+      molecule_hosts:
+        hosts:
+          "${VMWARE_PROVISIONER_TEST_HOST}":
+            vmware_provisioner_vms:
+              - name: "vmware_provisioner_testing_vm1"
+                annotation: Ansible role vmware_provisioner unit test vm 1
+                folder: /
+                guest_id: centos7_64Guest
+                hardware:
+                  memory_mb: 512
+                  num_cpus: 1
+                  num_cpu_cores_per_socket: 1
+                wait_for_ip_address: no
+                force: yes
+
+              - name: "vmware_provisioner_testing_vm2"
+                annotation: Ansible role vmware_provisioner unit test vm 1
+                folder: /
+                guest_id: centos7_64Guest
+                hardware:
+                  memory_mb: 512
+                  num_cpus: 1
+                  num_cpu_cores_per_socket: 1
+                wait_for_ip_address: no
+                force: yes
+verifier:
+  name: ansible

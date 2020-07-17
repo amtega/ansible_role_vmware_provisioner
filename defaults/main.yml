@@ -96,29 +96,29 @@ vmware_provisioner_vm_wait_for_ip_address: no
 
 # Gather all basic virtual machine facts from vCenter or ESXi
 
-vmware_provisioner_gather_all_basic_vm_fact: no
+vmware_provisioner_gather_all_basic_vm_facts: no
 
 # If the the value of the previous variable is yes, the role does not gather
-# vCenter or ESXi vm fact if this info is already in the play, but with the
-# foollowing variable it is possible to force it
+# facts if this info is already in the play, but with the foollowing variable it
+# is possible to force it
 
-vmware_provisioner_gather_all_basic_vm_fact_force: no
+vmware_provisioner_gather_all_basic_vm_facts_force: no
 
-# Gather datacenters fact
+# Gather datacenters info
 
-vmware_provisioner_gather_datacenters_fact: yes
+vmware_provisioner_gather_datacenters_info: yes
 
 # Gather clusters fact
 
-vmware_provisioner_gather_clusters_fact: yes
+vmware_provisioner_gather_clusters_info: yes
 
 # Gather datastores fact
 
-vmware_provisioner_gather_datastores_fact: yes
+vmware_provisioner_gather_datastores_info: yes
 
 # Gather folders fact
 
-vmware_provisioner_gather_folders_fact: yes
+vmware_provisioner_gather_folders_info: yes
 
 # Setup fact with will a list of virtual machines configs defined in the
 # inventory from any host present in the ansible `hostvars` variable that

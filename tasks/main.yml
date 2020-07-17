@@ -11,35 +11,40 @@
   tags:
     - role::vmware_provisioner
 
-- include_tasks: datacenters_fact.yml
+- include_tasks: datacenters_info.yml
   when:
-    - vmware_provisioner_gather_datacenters_fact | bool
-    - vmware_provisioner_datacenters_fact is not defined
+    - >-
+      vmware_provisioner_gather_datacenters_info | bool
+      or vmware_provisioner_gather_clusters_info | bool
+      or vmware_provisioner_gather_datastores_info | bool
+    - vmware_provisioner_datacenters_info is not defined
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datacenters
 
-- include_tasks: clusters_fact.yml
+- include_tasks: clusters_info.yml
   when:
-    - vmware_provisioner_gather_clusters_fact | bool
-    - vmware_provisioner_clusters_fact is not defined
+    - >-
+      vmware_provisioner_gather_clusters_info | bool
+      or vmware_provisioner_gather_datastores_info | bool
+    - vmware_provisioner_clusters_info is not defined
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::clusters
 
-- include_tasks: datastores_fact.yml
+- include_tasks: datastores_info.yml
   when:
-    - vmware_provisioner_gather_datastores_fact | bool
-    - vmware_provisioner_datastores_fact is not defined
+    - vmware_provisioner_gather_datastores_info | bool
+    - vmware_provisioner_datastores_info is not defined
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datastores
 
-- include_tasks: folders_fact.yml
+- include_tasks: folders_info.yml
   when:
-    - vmware_provisioner_gather_datacenters_fact | bool
-    - vmware_provisioner_gather_folders_fact | bool
-    - vmware_provisioner_folders_fact is not defined
+    - vmware_provisioner_gather_datacenters_info | bool
+    - vmware_provisioner_gather_folders_info | bool
+    - vmware_provisioner_folders_info is not defined
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::foders

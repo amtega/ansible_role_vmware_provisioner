@@ -127,7 +127,7 @@
              | default(omit, boolean=true) }}
       vars:
         vmware_provisioner_vm_name_exists: >-
-          {{ vmware_provisioner_vms_detailed_fact
+          {{ vmware_provisioner_vms_detailed_facts
              | selectattr("hw_name", "defined")
              | selectattr("hw_name",
                           "equalto",
@@ -138,7 +138,7 @@
              | length > 0 }}
 
         vmware_provisioner_vm_uuid_exists: >-
-          {{ vmware_provisioner_vms_detailed_fact
+          {{ vmware_provisioner_vms_detailed_facts
              | selectattr("instance_uuid", "defined")
              | selectattr("instance_uuid",
                           "equalto",
