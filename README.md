@@ -52,7 +52,7 @@ Tests are based on [molecule with docker containers](https://molecule.readthedoc
 
 To run test you must point the environment variable `VMWARE_PROVISIONER_TEST_HOST` to a host that can be managed with ansible and that has access to an existing vCenter.
 
-Also, to run test you need provide the some role variables. One way to provide this information is calling the testing playbook passing an additional inventory using the following environment variables:
+Also, to run test you need provide some role variables. One way to provide this information is calling the testing playbook passing an additional inventory using the following environment variables:
 
 - `ANSIBLE_INVENTORY`: path to an inventory
 - `ANSIBLE_VAULT_PASSWORD_FILE`: path to the file containing the vault password required for the previous inventory
