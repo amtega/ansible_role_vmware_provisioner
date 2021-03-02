@@ -99,7 +99,7 @@ vmware_provisioner_vm_wait_for_ip_address: no
 vmware_provisioner_gather_all_basic_vm_facts: no
 
 # If the the value of the previous variable is yes, the role does not gather
-# facts if this info is already in the play, but with the foollowing variable it
+# facts if this info is already in the play, but with the following variable it
 # is possible to force it
 
 vmware_provisioner_gather_all_basic_vm_facts_force: no
@@ -108,17 +108,41 @@ vmware_provisioner_gather_all_basic_vm_facts_force: no
 
 vmware_provisioner_gather_datacenters_info: yes
 
+# If the the value of the previous variable is yes, the role does not gather
+# if this info is already in the play, but with the following variable it
+# is possible to force it
+
+vmware_provisioner_gather_datacenters_info_force: no
+
 # Gather clusters fact
 
 vmware_provisioner_gather_clusters_info: yes
+
+# If the the value of the previous variable is yes, the role does not gather
+# if this info is already in the play, but with the following variable it
+# is possible to force it
+
+vmware_provisioner_gather_clusters_info_force: no
 
 # Gather datastores fact
 
 vmware_provisioner_gather_datastores_info: yes
 
+# If the the value of the previous variable is yes, the role does not gather
+# if this info is already in the play, but with the following variable it
+# is possible to force it
+
+vmware_provisioner_gather_datastores_info_force: no
+
 # Gather folders fact
 
 vmware_provisioner_gather_folders_info: yes
+
+# If the the value of the previous variable is yes, the role does not gather
+# if this info is already in the play, but with the following variable it
+# is possible to force it
+
+vmware_provisioner_gather_folders_info_force: no
 
 # Setup fact with will a list of virtual machines configs defined in the
 # inventory from any host present in the ansible `hostvars` variable that

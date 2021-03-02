@@ -24,7 +24,9 @@
         vmware_provisioner_folders_info: >-
           {{ lookup("template", "folders_info.yml.j2") | from_yaml }}
 
-  when: vmware_provisioner_folders_info is not defined
+  when: >-
+    vmware_provisioner_folders_info is not defined
+    or vmware_provisioner_gather_folders_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::folders

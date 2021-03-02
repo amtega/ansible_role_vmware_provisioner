@@ -50,7 +50,9 @@
         vmware_provisioner_clusters_info: >-
           {{ lookup("template", "clusters_info.yml.j2") | from_yaml }}
 
-  when: vmware_provisioner_clusters_info is not defined
+  when: >-
+    vmware_provisioner_clusters_info is not defined
+    or vmware_provisioner_gather_clusters_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::clusters

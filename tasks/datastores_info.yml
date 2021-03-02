@@ -21,7 +21,9 @@
         vmware_provisioner_datastores_info: >-
           {{ lookup("template", "datastores_info.yml.j2") | from_yaml }}
 
-  when: vmware_provisioner_datastores_info is not defined
+  when: >-
+    vmware_provisioner_datastores_info is not defined
+    or vmware_provisioner_gather_datastores_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datastores

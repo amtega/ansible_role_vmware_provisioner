@@ -5,6 +5,7 @@
 
 {% for d in r.datastores  %}
 - name: {{ d.name | to_json }}
+  hostname: "{{ vmware_provisioner_hostname }}"
   datacenter: {{ datacenter }}
   cluster: {{ cluster }}
   total: {{ d.total | to_json }}

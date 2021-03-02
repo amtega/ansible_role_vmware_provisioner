@@ -1,0 +1,5 @@
+{% for datacenter in vmware_provisioner_datacenters_result.json.value %}
+- {{ datacenter
+     | combine({"hostname": vmware_provisioner_hostname})
+     | to_json }}
+{% endfor %}
