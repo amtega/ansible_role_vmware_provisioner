@@ -87,7 +87,7 @@ vmware_provisioner_vms_provisioning_method: sequential
 # dictionary of the vmware_provisioner_vms variable.
 
 vmware_provisioner_vm_annotation: "Provisioned with ansible"
-vmware_provisioner_vm_cdrom: {'type': none}
+#vmware_provisioner_vm_cdrom: 
 vmware_provisioner_vm_cluster:
 vmware_provisioner_vm_customization: {}
 vmware_provisioner_vm_customization_spec:
