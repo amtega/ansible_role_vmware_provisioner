@@ -48,7 +48,7 @@
       vars:
         vmware_provisioner_auth_item: >-
           {{ vmware_provisioner_auth
-             [vm.vcenter | default(vmware_provisioner_hostname_default]
+             [vm.vcenter | default(vmware_provisioner_hostname_default)]
              | default({}) }}
   tags:
     - role::vmware_provisioner
