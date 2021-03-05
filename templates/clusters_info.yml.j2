@@ -1,7 +1,7 @@
 {% set ns = namespace(found=false) %}
 
 {% for r in vmware_provisioner_clusters_result.results %}
-{% set hostname_dict = {"hostname": vmware_provisioner_hostname} %}
+{% set hostname_dict = {"hostname": r.vmware_provisioner_datacenter.hostname} %}
 {% set datacenter_dict = {"datacenter": r.vmware_provisioner_datacenter.name} %}
 {% for c in r.json.value %}
 {% if vmware_provisioner_host_config_info_result is defined %}
@@ -14,7 +14,7 @@
 - {{ c
      | combine(hostname_dict)
      | combine(datacenter_dict)
-     | combine({"hosts": hosts}) 
+     | combine({"hosts": hosts})
      | to_json }}
 {% else %}
 - {{ c

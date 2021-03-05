@@ -7,8 +7,28 @@ vmware_provisioner_modules_rel_dir: ansible/modules/cloud/vmware
 
 # vms to be managed
 
-vmware_vms_to_manage: >-
+vmware_provisioner_vms_to_manage: >-
   {{ (vmware_provisioner_vms
      + (vmware_provisioner_gather_inventory_vm_configs
         and vmware_provisioner_manage_inventory_vms)
        | ternary(vmware_provisioner_inventory_vms | default([]), [])) }}
+
+# Hostnames
+
+vmware_provisioner_hostname_default: >-
+  {{ [vmware_provisioner_hostname]
+     | flatten
+     | first }}
+
+vmware_provisioner_hostnames_list: >-
+  {{ ([vmware_provisioner_hostname]
+      + vmware_provisioner_vms_to_manage
+        | selectattr("vcenter", "defined")
+        | map(attribute="vcenter")
+        | list)
+     | flatten
+     | unique }}
+
+# Auth info
+
+vmware_provisioner_auth: "{{ lookup('template', 'auth.yml.j2') | from_yaml }}"

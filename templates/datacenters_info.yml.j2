@@ -1,5 +1,7 @@
-{% for datacenter in vmware_provisioner_datacenters_result.json.value %}
+{% for result in vmware_provisioner_datacenters_result.results %}
+{% for datacenter in result.json.value %}
 - {{ datacenter
-     | combine({"hostname": vmware_provisioner_hostname})
+     | combine({"hostname": result.vmware_provisioner_vcenter_item })
      | to_json }}
+{% endfor %}
 {% endfor %}

@@ -1,9 +1,21 @@
 ---
 # Role default lower priority variables
 
-# vSphere vCenter or ESXi server connection settings
+# vSphere vCenter or ESXi server if no other one is given for the virtual
+# machine (See vmware_provisioner_vms variable below for details).
+#
+# This value can be a single value or a list. A list is useful if you wanto to
+# gahter facts from several hosts.
+#
+# In the case you give here a list and a virtual machine does not have a vCenter
+# host defined, the role will use the first one.
 
 vmware_provisioner_hostname:
+
+# vSphere vCenter or ESXi server connection settings if no other ones are given
+# for the virtual machine (See vmware_provisioner_vms variable below for
+# details).
+
 # vmware_provisioner_port: 443
 vmware_provisioner_username:
 vmware_provisioner_password:
@@ -56,6 +68,14 @@ vmware_provisioner_validate_certs: yes
 #   - name: <name of the attribute>
 #     value: <value of the attribute>
 #     state: <can be present or absent
+#
+# Complementary to the attributes detailed before you can indicate individual
+# vCenter hosts and auth info per virtual machine with the following
+# attributes:
+#
+# vcenter: <vcenter_hostname>
+# username: <username>
+# password: <password>
 
 vmware_provisioner_vms: []
 

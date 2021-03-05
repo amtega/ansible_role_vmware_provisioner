@@ -5,10 +5,14 @@
     - name: Gather vmware clusters info from vCenter
       uri:
         url: >-
-          https://{{ vmware_provisioner_hostname }}/rest/vcenter/cluster
+          {{ "https://"
+             + vmware_provisioner_datacenter.hostname
+             + "/rest/vcenter/cluster" }}
         method: GET
         headers:
-          vmware-api-session-id: "{{ vmware_provisioner_session_id }}"
+          vmware-api-session-id: >-
+            {{ vmware_provisioner_session_id
+               [vmware_provisioner_datacenter.hostname] }}
         body_format: json
         body:
           filter:
@@ -29,9 +33,15 @@
         datacenter_name: >-
           {{ vmware_provisioner_cluster.0.vmware_provisioner_datacenter.name }}
         cluster_name: "{{ vmware_provisioner_cluster.1.name }}"
-        hostname: "{{ vmware_provisioner_hostname }}"
-        username: "{{ vmware_provisioner_username }}"
-        password: "{{ vmware_provisioner_password }}"
+        hostname: >-
+          {{ vmware_provisioner_cluster.0.vmware_provisioner_datacenter
+             .hostname }}
+        username: >-
+          {{ vmware_provisioner_auth_item.username
+             | default(vmware_provisioner_username) }}
+        password: >-
+          {{ vmware_provisioner_auth_item.password
+             | default(vmware_provisioner_password) }}
         port: "{{ vmware_provisioner_port | default(omit) }}"
         validate_certs: "{{ vmware_provisioner_validate_certs }}"
       register: vmware_provisioner_host_config_info_result
@@ -39,11 +49,18 @@
         {{ lookup("subelements",
                   vmware_provisioner_clusters_result.results,
                   "json.value",
-                  skip_missing=true) }}
+                  skip_missing=true,
+                  wantlist=True) }}
       loop_control:
         loop_var: vmware_provisioner_cluster
         label: "{{ vmware_provisioner_cluster.1.name }}"
       ignore_errors: yes
+      vars:
+        vmware_provisioner_auth_item: >-
+            {{ vmware_provisioner_auth
+               [vmware_provisioner_cluster.0.vmware_provisioner_datacenter
+                .hostname]
+               | default({}) }}
 
     - name: Setup fact with vmware clusters
       set_fact:

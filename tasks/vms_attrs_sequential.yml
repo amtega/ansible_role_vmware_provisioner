@@ -16,18 +16,21 @@
              | default(vmware_provisioner_vm_folder)
              | default(omit, boolean=true)  }}
         hostname: >-
-          {{ vmware_provisioner_hostname }}
+          {{ vm.0.vcenter
+             | default(vmware_provisioner_hostname_default) }}
         name: >-
           {{ vm.0.name
              | default(vmware_provisioner_vm_name)
              | default(omit, boolean=true) }}
         password: >-
-          {{ vmware_provisioner_password }}
+          {{ vmware_provisioner_auth_item.password
+             | default(vmware_provisioner_password) }}
         port: >-
           {{ vmware_provisioner_port | default(omit) }}
         state: "{{ vm.1.state }}"
         username: >-
-          {{ vmware_provisioner_username }}
+          {{ vmware_provisioner_auth_item.username
+             | default(vmware_provisioner_username) }}
         uuid: >-
           {{ vm.0.uuid
              | default(vmware_provisioner_vm_uuid)
@@ -36,13 +39,13 @@
           {{ vmware_provisioner_validate_certs | default(omit) }}
       register: vmware_provisioner_vms_setup_attributes_result
       loop: >-
-        {{ (vmware_vms_to_manage
+        {{ (vmware_provisioner_vms_to_manage
             | selectattr("state", "defined")
             | rejectattr("state", "equalto", "absent")
             | rejectattr("attributes", "undefined")
             | list
             + (vmware_provisioner_vm_state != "absent")
-              | ternary(vmware_vms_to_manage
+              | ternary(vmware_provisioner_vms_to_manage
                         | selectattr("state", "undefined")
                         | rejectattr("attributes", "undefined")
                         | list,
@@ -51,6 +54,11 @@
       loop_control:
         loop_var: vm
         label: "{{ vm.0.name }} {{ vm.1.name }}"
+      vars:
+        vmware_provisioner_auth_item: >-
+          {{ vmware_provisioner_auth
+             [vm.0.vcenter | default(vmware_provisioner_hostname_default)]
+             | default({}) }}
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms

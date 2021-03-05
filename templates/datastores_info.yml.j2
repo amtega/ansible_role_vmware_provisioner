@@ -1,11 +1,12 @@
 {% set ns = namespace(found=false) %}
 {% for r in vmware_provisioner_datastores_result.results %}
+{% set hostname = r.vmware_provisioner_cluster.hostname %}
 {% set datacenter = r.vmware_provisioner_cluster.datacenter %}
 {% set cluster = r.vmware_provisioner_cluster.name %}
 
 {% for d in r.datastores  %}
 - name: {{ d.name | to_json }}
-  hostname: "{{ vmware_provisioner_hostname }}"
+  hostname: "{{ hostname }}"
   datacenter: {{ datacenter }}
   cluster: {{ cluster }}
   total: {{ d.total | to_json }}
