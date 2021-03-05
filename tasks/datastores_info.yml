@@ -5,9 +5,13 @@
     - name: Gather clusters datastores from vCenter
       _vmware_provisioner_cluster_datastores:
         hosts: "{{ (vmware_provisioner_cluster.hosts | shuffle)[0:1] }}"
-        hostname: "{{ vmware_provisioner_hostname }}"
-        username: "{{ vmware_provisioner_username }}"
-        password: "{{ vmware_provisioner_password }}"
+        hostname: "{{ vmware_provisioner_cluster.hostname }}"
+        username: >-
+          {{ vmware_provisioner_auth_item.username
+             | default(vmware_provisioner_username) }}
+        password: >-
+          {{ vmware_provisioner_auth_item.password
+             | default(vmware_provisioner_password) }}
         port: "{{ vmware_provisioner_port | default(omit) }}"
         validate_certs: "{{ vmware_provisioner_validate_certs }}"
       register: vmware_provisioner_datastores_result
@@ -15,13 +19,20 @@
       loop_control:
         loop_var: vmware_provisioner_cluster
         label: "{{ vmware_provisioner_cluster.name }}"
+      vars:
+        vmware_provisioner_auth_item: >-
+            {{ vmware_provisioner_auth
+               [vmware_provisioner_cluster.hostname]
+               | default({}) }}
 
     - name: Setup fact with vmware datastores
       set_fact:
         vmware_provisioner_datastores_info: >-
           {{ lookup("template", "datastores_info.yml.j2") | from_yaml }}
 
-  when: vmware_provisioner_datastores_info is not defined
+  when: >-
+    vmware_provisioner_datastores_info is not defined
+    or vmware_provisioner_gather_datastores_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datastores

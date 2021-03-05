@@ -15,8 +15,8 @@ galaxy_info:
         - 8
     - name: Fedora
       versions:
-        - 29
-        - 30
+        - 32
+        - 33
   galaxy_tags:
     - vmware
     - system
