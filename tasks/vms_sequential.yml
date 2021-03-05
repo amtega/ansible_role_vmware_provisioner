@@ -58,7 +58,8 @@
              | default(vmware_provisioner_vm_hardware)
              | default(omit, boolean=true) }}
         hostname: >-
-          {{ vmware_provisioner_hostname }}
+          {{ vm.vcenter
+             | default(vmware_provisioner_hostname_default) }}
         is_template: >-
           {{ vm.is_template
              | default(vmware_provisioner_vm_is_template) }}
@@ -78,7 +79,8 @@
              | default(vmware_provisioner_vm_networks)
              | default(omit, boolean=true) }}
         password: >-
-          {{ vmware_provisioner_password }}
+          {{ vmware_provisioner_auth_item.password
+             | default(vmware_provisioner_password) }}
         port: >-
           {{ vmware_provisioner_port | default(omit) }}
         resource_pool: >-
@@ -102,7 +104,8 @@
              | default(vmware_provisioner_vm_template)
              | default(omit, boolean=true) }}
         username: >-
-          {{ vmware_provisioner_username }}
+          {{ vmware_provisioner_auth_item.username
+             | default(vmware_provisioner_username) }}
         uuid: >-
           {{ vm.uuid
              | default(vmware_provisioner_vm_uuid)
@@ -117,7 +120,7 @@
           {{ vm.wait_for_ip_address
              | default(vmware_provisioner_vm_wait_for_ip_address) }}
       register: vmware_provisioner_vms_setup_result
-      loop: "{{ vmware_vms_to_manage }}"
+      loop: "{{ vmware_provisioner_vms_to_manage }}"
       loop_control:
         loop_var: vm
         label: >-
@@ -126,6 +129,11 @@
              | default(vmware_provisioner_vm_state)
              | default(omit, boolean=true) }}
       vars:
+        vmware_provisioner_auth_item: >-
+          {{ vmware_provisioner_auth
+             [vm.vcenter | default(vmware_provisioner_hostname_default)]
+             | default({}) }}
+
         vmware_provisioner_vm_name_exists: >-
           {{ vmware_provisioner_vms_detailed_facts
              | selectattr("hw_name", "defined")

@@ -17,7 +17,10 @@
       vmware_provisioner_gather_datacenters_info | bool
       or vmware_provisioner_gather_clusters_info | bool
       or vmware_provisioner_gather_datastores_info | bool
-    - vmware_provisioner_datacenters_info is not defined
+    - >-
+      vmware_provisioner_datacenters_info is not defined
+      or vmware_provisioner_gather_datacenters_info_force | bool
+
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datacenters
@@ -27,7 +30,9 @@
     - >-
       vmware_provisioner_gather_clusters_info | bool
       or vmware_provisioner_gather_datastores_info | bool
-    - vmware_provisioner_clusters_info is not defined
+    - >-
+      vmware_provisioner_clusters_info is not defined
+      or vmware_provisioner_gather_clusters_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::clusters
@@ -35,7 +40,9 @@
 - include_tasks: datastores_info.yml
   when:
     - vmware_provisioner_gather_datastores_info | bool
-    - vmware_provisioner_datastores_info is not defined
+    - >-
+      vmware_provisioner_datastores_info is not defined
+      or vmware_provisioner_gather_datastores_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datastores
@@ -44,7 +51,9 @@
   when:
     - vmware_provisioner_gather_datacenters_info | bool
     - vmware_provisioner_gather_folders_info | bool
-    - vmware_provisioner_folders_info is not defined
+    - >-
+      vmware_provisioner_folders_info is not defined
+      or vmware_provisioner_gather_folders_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::foders

@@ -5,22 +5,28 @@
     - name: Gather vmware datacenters info from vCenter
       uri:
         url: >-
-          https://{{ vmware_provisioner_hostname }}/rest/vcenter/datacenter
+          https://{{ vmware_provisioner_vcenter_item }}/rest/vcenter/datacenter
         method: GET
         headers:
-          vmware-api-session-id: "{{ vmware_provisioner_session_id }}"
+          vmware-api-session-id: >-
+            {{ vmware_provisioner_session_id[vmware_provisioner_vcenter_item] }}
         status_code: 200
         return_content: yes
         validate_certs: "{{ vmware_provisioner_validate_certs }}"
       register: vmware_provisioner_datacenters_result
+      loop: "{{ vmware_provisioner_hostnames_list }}"
+      loop_control:
+        loop_var: vmware_provisioner_vcenter_item
       no_log: "{{ vmware_provisioner_no_log | bool }}"
 
     - name: Setup fact with vmware datacenters
       set_fact:
         vmware_provisioner_datacenters_info: >-
-          {{ vmware_provisioner_datacenters_result.json.value }}
+          {{ lookup("template", "datacenters_info.yml.j2") | from_yaml }}
 
-  when: vmware_provisioner_datacenters_info is not defined
+  when: >-
+    vmware_provisioner_datacenters_info is not defined
+    or vmware_provisioner_gather_datacenters_info_force | bool
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::datacenters

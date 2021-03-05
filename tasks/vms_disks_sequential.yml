@@ -14,17 +14,20 @@
              | default(vmware_provisioner_vm_folder)
              | default(omit, boolean=true)  }}
         hostname: >-
-          {{ vmware_provisioner_hostname }}
+          {{ vm.vcenter
+             | default(vmware_provisioner_hostname_default) }}
         name: >-
           {{ vm.name
              | default(vmware_provisioner_vm_name)
              | default(omit, boolean=true) }}
         password: >-
-          {{ vmware_provisioner_password }}
+          {{ vmware_provisioner_auth_item.password
+             | default(vmware_provisioner_password) }}
         port: >-
           {{ vmware_provisioner_port | default(omit) }}
         username: >-
-          {{ vmware_provisioner_username }}
+          {{ vmware_provisioner_auth_item.username
+             | default(vmware_provisioner_username) }}
         uuid: >-
           {{ vm.uuid
              | default(vmware_provisioner_vm_uuid)
@@ -33,7 +36,7 @@
           {{ vmware_provisioner_validate_certs | default(omit) }}
       register: vmware_provisioner_vms_disks_setup_result
       when: vm.state | default(vmware_provisioner_vm_state) != "absent"
-      loop: "{{ vmware_vms_to_manage }}"
+      loop: "{{ vmware_provisioner_vms_to_manage }}"
       loop_control:
         loop_var: vm
         index_var: vm_index
@@ -42,6 +45,11 @@
           {{ vm.state
              | default(vmware_provisioner_vm_state)
              | default(omit, boolean=true) }}
+      vars:
+        vmware_provisioner_auth_item: >-
+          {{ vmware_provisioner_auth
+             [vm.vcenter | default(vmware_provisioner_hostname_default)]
+             | default({}) }}
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms

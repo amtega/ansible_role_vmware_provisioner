@@ -1,5 +1,6 @@
 {% for result in vmware_provisioner_folders_result.results %}
 - {{ result.folder_info
-     | combine({"datacenter": result.vmware_provisioner_datacenter_item})
+     | combine({"hostname": result.vmware_provisioner_datacenter_item.hostname})
+     | combine({"datacenter": result.vmware_provisioner_datacenter_item.name})
      | to_json }}
 {% endfor %}

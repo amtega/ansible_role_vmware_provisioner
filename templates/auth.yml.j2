@@ -1,0 +1,13 @@
+{% set ns = namespace(auth={}) %}
+{% for vm in vmware_provisioner_vms_to_manage %}
+{% if vm.vcenter | default("") | length > 0 %}
+{% set auth_dict = {
+  vm.vcenter: {"username": vm.username
+                           | default(vmware_provisioner_username),
+               "password": vm.password
+                           | default(vmware_provisioner_password)}} %}
+{% set ns.auth = ns.auth | combine(auth_dict, recursive=true) %}
+{% endif %}
+{% endfor %}
+
+{{ ns.auth | to_json }}

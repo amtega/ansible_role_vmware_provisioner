@@ -4,18 +4,32 @@
 - block:
     - name: Gather basic vmware virtual machines facts from vCenter
       vmware_vm_info:
-        hostname: "{{ vmware_provisioner_hostname }}"
-        username: "{{ vmware_provisioner_username }}"
-        password: "{{ vmware_provisioner_password }}"
+        hostname: "{{ vmware_provisioner_vcenter_item }}"
+        username: >-
+          {{ vmware_provisioner_auth_item.username
+             | default(vmware_provisioner_username) }}
+        password: >-
+          {{ vmware_provisioner_auth_item.password
+             | default(vmware_provisioner_password) }}
         port: "{{ vmware_provisioner_port | default(omit) }}"
         validate_certs: "{{ vmware_provisioner_validate_certs }}"
         vm_type: all
       register: vmware_provisioner_vms_basic_facts_result
+      loop: "{{ vmware_provisioner_hostnames_list }}"
+      loop_control:
+        loop_var: vmware_provisioner_vcenter_item
+      vars:
+        vmware_provisioner_auth_item: >-
+          {{ vmware_provisioner_auth[vmware_provisioner_vcenter_item]
+             | default({}) }}
 
     - name: Setup fact with vmware virtual machines gathered basic facts
       set_fact:
         vmware_provisioner_vms_basic_facts: >-
-          {{ vmware_provisioner_vms_basic_facts_result.virtual_machines }}
+          {{ vmware_provisioner_vms_basic_facts_result.results
+             | map(attribute="virtual_machines")
+             | sum(start=[])
+             | list }}
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
