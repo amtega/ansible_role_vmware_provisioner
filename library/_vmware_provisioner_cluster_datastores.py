@@ -40,9 +40,14 @@ class VMwareHostFactManager(PyVmomi):
         datastores = []
         for datastore in host.datastore:
             datastore_info = {
+                'accessible': datastore.summary.accessible,
+                'free': datastore.summary.freeSpace,
+                'maintenanceMode': datastore.summary.maintenanceMode,
+                'multipleHostAccess': datastore.summary.multipleHostAccess,
                 'name': datastore.summary.name,
                 'total': datastore.summary.capacity,
-                'free': datastore.summary.freeSpace,
+                'type': datastore.summary.type,
+                'uncommitted': datastore.summary.uncommitted,
             }
             datastores.append(datastore_info)
         return datastores
