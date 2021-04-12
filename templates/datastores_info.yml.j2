@@ -9,8 +9,13 @@
   hostname: "{{ hostname }}"
   datacenter: {{ datacenter }}
   cluster: {{ cluster }}
-  total: {{ d.total | to_json }}
+  accessible: {{ d.accessible | to_json }}
   free: {{ d.free | to_json }}
+  maintenanceMode: {{ d.maintenanceMode | to_json }}
+  multipleHostAccess: {{ d.multipleHostAccess | to_json }}
+  total: {{ d.total | to_json }}
+  type: {{ d.type | to_json }}
+  uncommitted: {{ d.uncommitted | to_json }}
 {% set ns.found = true %}
 {% endfor %}
 {% endfor %}
