@@ -2,12 +2,12 @@
 
 dependency:
   name: galaxy
-driver:
-  name: delegated
+  enabled: yes
   options:
-    managed: False
-    ansible_connection_options:
-      ansible_connection: local
+    ignore-certs: yes
+    ignore-errors: yes
+    role-file: "${MOLECULE_SCENARIO_DIRECTORY}/requirements.yml"
+    requirements-file: "${MOLECULE_SCENARIO_DIRECTORY}/requirements.yml"
 lint: "${MOLECULE_SCENARIO_DIRECTORY}/linters.sh"
 platforms:
   - name: dummy

@@ -15,6 +15,7 @@ export ANSIBLE_INVENTORY_PLUGINS=$PWD/inventory_plugins
 export ANSIBLE_LIBRARY=$PWD/library
 export ANSIBLE_LOOKUP_PLUGINS=$PWD/lookup_plugins
 export ANSIBLE_NETCONF_PLUGINS=$PWD/netconf_plugins
+export ANSIBLE_ROLES_PATH=$MOLECULE_EPHEMERAL_DIRECTORY/roles
 export ANSIBLE_STRATEGY_PLUGINS=$PWD/strategy_plugins
 export ANSIBLE_TERMINAL_PLUGINS=$PWD/terminal_plugins
 export ANSIBLE_TEST_PLUGINS=$PWD/test_plugins
