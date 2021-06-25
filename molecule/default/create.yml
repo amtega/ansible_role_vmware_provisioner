@@ -1,0 +1,5 @@
+---
+
+- name: Create
+  hosts: molecule_hosts
+  gather_facts: no
