@@ -29,7 +29,7 @@
       no_log: "{{ vmware_provisioner_no_log | bool }}"
 
     - name: Gather vmware cluster hosts from vCenter
-      _vmware_provisioner_cluster_hosts:
+      vmware_provisioner_cluster_hosts:
         datacenter_name: >-
           {{ vmware_provisioner_cluster.0.vmware_provisioner_datacenter.name }}
         cluster_name: "{{ vmware_provisioner_cluster.1.name }}"
