@@ -18,6 +18,7 @@
       loop: "{{ vmware_provisioner_hostnames_list }}"
       loop_control:
         loop_var: vmware_provisioner_vcenter_item
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
       vars:
         vmware_provisioner_auth_item: >-
           {{ vmware_provisioner_auth[vmware_provisioner_vcenter_item]

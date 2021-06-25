@@ -18,7 +18,7 @@ provisioner:
     - --vault-password-file=${ANSIBLE_VAULT_PASSWORD_FILE:-/etc/hostname}
   config_options:
     defaults:
-      callback_whitelist: profile_tasks
+      callback_enabled: profile_tasks
       action_plugins: $PWD/action_plugins
   inventory:
     hosts:

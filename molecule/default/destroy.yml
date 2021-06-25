@@ -1,0 +1,5 @@
+---
+
+- name: Destroy
+  hosts: molecule_hosts
+  gather_facts: no

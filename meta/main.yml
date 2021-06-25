@@ -3,6 +3,7 @@
 
 galaxy_info:
   role_name: vmware_provisioner
+  namespace: amtega
   author: Juan Antonio Valiño García
   description: Setup VMware virtual machines
   company: AMTEGA - Xunta de Galicia

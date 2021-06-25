@@ -19,6 +19,7 @@
       loop_control:
         loop_var: vmware_provisioner_cluster
         label: "{{ vmware_provisioner_cluster.name }}"
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
       vars:
         vmware_provisioner_auth_item: >-
             {{ vmware_provisioner_auth
