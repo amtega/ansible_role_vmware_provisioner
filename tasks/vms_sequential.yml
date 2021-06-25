@@ -163,6 +163,7 @@
                        [ vm.disk
                          | default(vmware_provisioner_vm_disk)
                          | first ]) }}
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms

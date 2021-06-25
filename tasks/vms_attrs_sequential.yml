@@ -54,6 +54,7 @@
       loop_control:
         loop_var: vm
         label: "{{ vm.0.name }} {{ vm.1.name }}"
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
       vars:
         vmware_provisioner_auth_item: >-
           {{ vmware_provisioner_auth
