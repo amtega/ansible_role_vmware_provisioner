@@ -61,8 +61,8 @@ def main():
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)
 
-    _vmware_provisioner_cluster_datastores = VMwareHostFactManager(module)
-    _vmware_provisioner_cluster_datastores.get_datastores()
+    vmware_provisioner_cluster_datastores = VMwareHostFactManager(module)
+    vmware_provisioner_cluster_datastores.get_datastores()
 
 
 if __name__ == '__main__':

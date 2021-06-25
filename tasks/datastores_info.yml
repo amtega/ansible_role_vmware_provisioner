@@ -3,7 +3,7 @@
 
 - block:
     - name: Gather clusters datastores from vCenter
-      _vmware_provisioner_cluster_datastores:
+      vmware_provisioner_cluster_datastores:
         hosts: "{{ (vmware_provisioner_cluster.hosts | shuffle)[0:1] }}"
         hostname: "{{ vmware_provisioner_cluster.hostname }}"
         username: >-
