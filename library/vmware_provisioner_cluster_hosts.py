@@ -53,10 +53,10 @@ def main():
         supports_check_mode=True
     )
 
-    _vmware_provisioner_cluster_hosts = VmwareConfigInfoManager(module)
+    vmware_provisioner_cluster_hosts = VmwareConfigInfoManager(module)
     module.exit_json(
         changed=False,
-        hosts=_vmware_provisioner_cluster_hosts.gather_hosts())
+        hosts=vmware_provisioner_cluster_hosts.gather_hosts())
 
 
 if __name__ == "__main__":
