@@ -46,6 +46,7 @@ dependencies:
         redhat:
           7:
             python-pyvmomi: present
+            python3-pyvmomi: present
           8:
             python3-pyvmomi: present
       packages_python:
