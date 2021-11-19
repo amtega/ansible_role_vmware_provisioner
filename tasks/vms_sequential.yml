@@ -160,9 +160,10 @@
           {{ (vmware_provisioner_vm_name_exists | bool
               or vmware_provisioner_vm_uuid_exists | bool)
              | ternary(omit,
-                       [ vm.disk
-                         | default(vmware_provisioner_vm_disk)
-                         | first ]) }}
+                       [(vm.disk
+                         | default(vmware_provisioner_vm_disk)).0
+                        | default([])]
+                        | flatten) }}
       no_log: "{{ vmware_provisioner_no_log | bool }}"
   tags:
     - role::vmware_provisioner
