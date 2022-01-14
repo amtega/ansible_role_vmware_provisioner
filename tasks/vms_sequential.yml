@@ -128,6 +128,7 @@
           {{ vm.state
              | default(vmware_provisioner_vm_state)
              | default(omit, boolean=true) }}
+      ignore_errors: yes
       vars:
         vmware_provisioner_auth_item: >-
           {{ vmware_provisioner_auth
@@ -165,6 +166,25 @@
                         | default([])]
                         | flatten) }}
       no_log: "{{ vmware_provisioner_no_log | bool }}"
+
+    - name: Check vmware virtual machines deploy
+      assert:
+        that: >-
+            vmware_provisioner_vms_setup_result.results[vm_index] is success
+        quiet: yes
+        fail_msg: >-
+          {{ vmware_provisioner_vms_setup_result.results[vm_index].msg
+             | default("") }}
+        success_msg: Virtual machine deployed successful
+      loop: "{{ vmware_provisioner_vms_to_manage }}"
+      loop_control:
+        loop_var: vm
+        index_var: vm_index
+        label: >-
+          {{ vm.name }}
+          {{ vm.state
+             | default(vmware_provisioner_vm_state)
+             | default(omit, boolean=true) }}
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
