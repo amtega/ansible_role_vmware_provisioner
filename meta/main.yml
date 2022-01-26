@@ -16,8 +16,8 @@ galaxy_info:
         - 8
     - name: Fedora
       versions:
-        - 33
         - 34
+        - 35
   galaxy_tags:
     - vmware
     - system
@@ -28,7 +28,7 @@ dependencies:
     vars:
       check_platform_distributions:
         centos: 7
-        fedora: 33
+        fedora: 34
         redhat: 7
     when: not vmware_provisioner_deps_resolved | default(false)
 

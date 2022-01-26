@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2022-01-26
+### Changed
+- Supported distros. Related to ansible/main#178
+
 ## [1.5.5] - 2022-01-14
 ### Fixed
 - Fixed error verbosity. Related to ansible/roles/amtega.vmware_provisioner#48
