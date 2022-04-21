@@ -10,7 +10,10 @@
 
     - include_tasks: >-
         vms_facts_detailed_{{ vmware_provisioner_vms_provisioning_method }}.yml
-      when: vmware_provisioner_vms | length > 0
+      when: >-
+        vmware_provisioner_vms | length > 0
+        and (vmware_provisioner_vms_detailed_facts is not defined
+             or vmware_provisioner_gather_detailed_vm_facts_force | bool)
 
     - block:
         - include_tasks: >-

@@ -8,6 +8,9 @@
     - role::vmware_provisioner
 
 - include_tasks: session.yml
+  when: >-
+    vmware_provisioner_force_new_session | bool
+    or vmware_provisioner_session_id is undefined
   tags:
     - role::vmware_provisioner
 
@@ -59,11 +62,17 @@
     - role::vmware_provisioner::foders
 
 - include_tasks: vms.yml
+  when: vmware_provisioner_vms_to_manage | length > 0
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
 
 - include_tasks: vms_attrs.yml
+  when: >-
+    vmware_provisioner_vms_to_manage
+    | selectattr("attributes", "defined")
+    | list
+    | length > 0
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
