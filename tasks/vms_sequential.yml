@@ -185,6 +185,44 @@
           {{ vm.state
              | default(vmware_provisioner_vm_state)
              | default(omit, boolean=true) }}
+
+    - name: Update basic facts removing absent virtual machines
+      set_fact:
+        vmware_provisioner_vms_basic_facts: >-
+          {{ vmware_provisioner_vms_basic_facts
+             | rejectattr("instance_uuid", "in", cobbler_absent_vms_uuid)
+             | rejectattr("guest_name", "in", cobbler_absent_vms_name)
+             | list }}
+      when: vmware_provisioner_vms_basic_facts is defined
+
+    - name: Update detailed facts removing absent virtual machines
+      set_fact:
+        vmware_provisioner_vms_detailed_facts: >-
+          {{ vmware_provisioner_vms_detailed_facts
+             | rejectattr("instance_uuid", "in", cobbler_absent_vms_uuid)
+             | rejectattr("hw_name", "in", cobbler_absent_vms_name)
+             | list }}
+  vars:
+    cobbler_absent_vms: >-
+      {{ vmware_provisioner_vms_setup_result.results
+         | selectattr("invocation.module_args.state", "defined")
+         | selectattr("invocation.module_args.state", "equalto", "absent") }}
+
+    cobbler_absent_vms_uuid: >-
+      {{ cobbler_absent_vms
+         | selectattr("invocation.module_args.uuid", "defined")
+         | map(attribute="invocation")
+         | map(attribute="module_args")
+         | map(attribute="uuid")
+         | list }}
+
+    cobbler_absent_vms_name: >-
+      {{ cobbler_absent_vms
+         | selectattr("invocation.module_args.name", "defined")
+         | map(attribute="invocation")
+         | map(attribute="module_args")
+         | map(attribute="name")
+         | list }}
   tags:
     - role::vmware_provisioner
     - role::vmware_provisioner::vms
