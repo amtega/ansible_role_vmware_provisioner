@@ -87,7 +87,7 @@ vmware_provisioner_vms_provisioning_method: sequential
 # dictionary of the vmware_provisioner_vms variable.
 
 vmware_provisioner_vm_annotation: "Provisioned with ansible"
-#vmware_provisioner_vm_cdrom: 
+#vmware_provisioner_vm_cdrom:
 vmware_provisioner_vm_cluster:
 vmware_provisioner_vm_customization: {}
 vmware_provisioner_vm_customization_spec:
@@ -123,6 +123,12 @@ vmware_provisioner_gather_all_basic_vm_facts: no
 # is possible to force it
 
 vmware_provisioner_gather_all_basic_vm_facts_force: no
+
+# The role does not gather virtual machine detailed facts if this info is
+# already in the play, but with the following variable it is possible to force
+# it
+
+vmware_provisioner_gather_detailed_vm_facts_force: no
 
 # Gather datacenters info
 
@@ -185,6 +191,11 @@ vmware_provisioner_manage_inventory_vms: no
 # want to gather facts
 
 vmware_provisioner_provisione: yes
+
+# The role will reuse existing session, but you can force the generation of
+# a new on with the following variable
+
+vmware_provisioner_force_new_session: no
 
 # Hide sensitive information
 
