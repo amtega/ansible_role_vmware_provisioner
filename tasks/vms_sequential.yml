@@ -159,7 +159,9 @@
 
         vmware_provisioner_vm_disk_to_manage: >-
           {{ (vmware_provisioner_vm_name_exists | bool
-              or vmware_provisioner_vm_uuid_exists | bool)
+              or vmware_provisioner_vm_uuid_exists | bool
+              or vm.is_template
+                 | default(vmware_provisioner_vm_is_template))
              | ternary(omit,
                        [(vm.disk
                          | default(vmware_provisioner_vm_disk)).0
