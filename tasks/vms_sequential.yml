@@ -163,7 +163,7 @@
               or vmware_provisioner_vm_uuid_exists | bool
               or vm.is_template
                  | default(vmware_provisioner_vm_is_template)
-              or vm.state | default(vmware_provisioner_vm_state) != "present")
+              or vm.state | default(vmware_provisioner_vm_state) != "present"
               or not vm.manage_disk
                  | default(vmware_provisioner_vm_manage_disk)
                  | bool)
