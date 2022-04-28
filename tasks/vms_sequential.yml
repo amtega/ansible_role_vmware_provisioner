@@ -129,6 +129,7 @@
              | default(vmware_provisioner_vm_state)
              | default(omit, boolean=true) }}
       ignore_errors: yes
+      no_log: "{{ vmware_provisioner_no_log | bool }}"
       vars:
         vmware_provisioner_auth_item: >-
           {{ vmware_provisioner_auth
@@ -161,13 +162,14 @@
           {{ (vmware_provisioner_vm_name_exists | bool
               or vmware_provisioner_vm_uuid_exists | bool
               or vm.is_template
-                 | default(vmware_provisioner_vm_is_template))
+                 | default(vmware_provisioner_vm_is_template)
+              or vm.state | default(vmware_provisioner_vm_state)
+                 not in ["absent", "present"])
              | ternary(omit,
                        [(vm.disk
                          | default(vmware_provisioner_vm_disk)).0
                         | default([])]
                         | flatten) }}
-      no_log: "{{ vmware_provisioner_no_log | bool }}"
 
     - name: Check vmware virtual machines deploy
       assert:
