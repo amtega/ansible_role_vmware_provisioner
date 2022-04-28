@@ -76,6 +76,10 @@ vmware_provisioner_validate_certs: yes
 # vcenter: <vcenter_hostname>
 # username: <username>
 # password: <password>
+#
+# Complementary you can indicate if virtual machine disk should be managed:
+#
+# manage_disk: <yes_no>
 
 vmware_provisioner_vms: []
 
@@ -113,6 +117,7 @@ vmware_provisioner_vm_template:
 vmware_provisioner_vm_uuid:
 vmware_provisioner_vm_vapp_properties: []
 vmware_provisioner_vm_wait_for_ip_address: no
+vmware_provisioner_vm_manage_disk: yes
 
 # Gather all basic virtual machine facts from vCenter or ESXi
 

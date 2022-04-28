@@ -35,7 +35,9 @@
         validate_certs: >-
           {{ vmware_provisioner_validate_certs | default(omit) }}
       register: vmware_provisioner_vms_disks_setup_result
-      when: vm.state | default(vmware_provisioner_vm_state) == "present"
+      when:
+        - vm.state | default(vmware_provisioner_vm_state) == "present"
+        - vm.manage_disk | default(vmware_provisioner_vm_manage_disk | bool
       loop: "{{ vmware_provisioner_vms_to_manage }}"
       loop_control:
         loop_var: vm

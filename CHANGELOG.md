@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2022-04-28
+### Added
+- Added option to indicate if virtual machines disks should be managed.
+
 ## [1.7.3] - 2022-04-28
 ### Fixed
 - Setup direct disk provisioning only for state present7absent. Related to ansible/playbooks/linux#86
