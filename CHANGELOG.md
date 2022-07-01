@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.3] - 2022-07-01
+### Fixed
+- Remove `latest` requirement for some packages. Related to ansible/playbooks/linux#109 and ansible/roles/amtega.mysql#15
+- Coding standards.
+
 ## [1.8.2] - 2022-04-28
 ### Added
 - Fixed templating error.

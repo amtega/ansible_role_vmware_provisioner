@@ -1,8 +1,7 @@
 ---
-# Get datacenters fact
 
 - name: Get vmware session id
-  uri:
+  ansible.builtin.uri:
     url: >-
       https://{{ vmware_provisioner_vcenter_item }}/rest/com/vmware/cis/session
     user: >-
@@ -27,6 +26,6 @@
          | default({}) }}
 
 - name: Setup fact with vmware session id
-  set_fact:
+  ansible.builtin.set_fact:
     vmware_provisioner_session_id: >-
       {{ lookup("template", "session_ids.yml.j2") | from_yaml }}

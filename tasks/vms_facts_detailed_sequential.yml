@@ -1,7 +1,7 @@
 ---
-# Get detailed vmware vms info
 
-- block:
+- name: Gather detailed vmware virtual machines facts
+  block:
     - name: Gather detailed vmware virtual machines facts from vCenter
       vmware_guest_info:
         datacenter: >-
@@ -44,7 +44,7 @@
              | default({}) }}
 
     - name: Setup fact with vmware virtual machines gathered detailed fact
-      set_fact:
+      ansible.builtin.set_fact:
         vmware_provisioner_vms_detailed_facts: >-
           {{ vmware_provisioner_vms_detailed_facts_result.results
              | selectattr("instance", "defined")

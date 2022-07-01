@@ -1,7 +1,7 @@
 ---
-# Setup vmware vms sequentiallly
 
-- block:
+- name: Setup vmware vms sequentiallly
+  block:
     - name: Sequential vmware virtual machines deploy
       vmware_guest:
         annotation: >-
@@ -174,7 +174,7 @@
                         | flatten) }}
 
     - name: Check vmware virtual machines deploy
-      assert:
+      ansible.builtin.assert:
         that: >-
             vmware_provisioner_vms_setup_result.results[vm_index] is success
         quiet: yes
@@ -193,7 +193,7 @@
              | default(omit, boolean=true) }}
 
     - name: Update basic facts removing absent virtual machines
-      set_fact:
+      ansible.builtin.set_fact:
         vmware_provisioner_vms_basic_facts: >-
           {{ vmware_provisioner_vms_basic_facts
              | rejectattr("instance_uuid", "in", cobbler_absent_vms_uuid)
@@ -202,7 +202,7 @@
       when: vmware_provisioner_vms_basic_facts is defined
 
     - name: Update detailed facts removing absent virtual machines
-      set_fact:
+      ansible.builtin.set_fact:
         vmware_provisioner_vms_detailed_facts: >-
           {{ vmware_provisioner_vms_detailed_facts
              | rejectattr("instance_uuid", "in", cobbler_absent_vms_uuid)
