@@ -1,8 +1,8 @@
 ---
-# Get datastores info
 
-- block:
-    - name: Gather clusters datastores from vCenter
+- name:  Gather clusters datastores info
+  block:
+    - name: Gather clusters datastores info from vCenter
       vmware_provisioner_cluster_datastores:
         hosts: "{{ (vmware_provisioner_cluster.hosts | shuffle)[0:1] }}"
         hostname: "{{ vmware_provisioner_cluster.hostname }}"
@@ -27,7 +27,7 @@
                | default({}) }}
 
     - name: Setup fact with vmware datastores
-      set_fact:
+      ansible.builtin.set_fact:
         vmware_provisioner_datastores_info: >-
           {{ lookup("template", "datastores_info.yml.j2") | from_yaml }}
 

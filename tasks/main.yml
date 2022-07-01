@@ -2,7 +2,7 @@
 # Role tasks
 
 - name: Setup fact to optimize further runs
-  set_fact:
+  ansible.builtin.set_fact:
     vmware_provisioner_deps_resolved: yes
   tags:
     - role::vmware_provisioner

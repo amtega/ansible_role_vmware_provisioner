@@ -1,9 +1,9 @@
 ---
-# Get datacenters info
 
-- block:
+- name: Gather vmware datacenters info
+  block:
     - name: Gather vmware datacenters info from vCenter
-      uri:
+      ansible.builtin.uri:
         url: >-
           https://{{ vmware_provisioner_vcenter_item }}/rest/vcenter/datacenter
         method: GET
@@ -20,7 +20,7 @@
       no_log: "{{ vmware_provisioner_no_log | bool }}"
 
     - name: Setup fact with vmware datacenters
-      set_fact:
+      ansible.builtin.set_fact:
         vmware_provisioner_datacenters_info: >-
           {{ lookup("template", "datacenters_info.yml.j2") | from_yaml }}
 

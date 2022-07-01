@@ -1,7 +1,7 @@
 ---
-# Setup vmware vms
 
-- block:
+- name: Setup vmware vms
+  block:
     - include_tasks: vms_facts_basic.yml
       when: >-
         vmware_provisioner_gather_all_basic_vm_facts | bool
@@ -15,7 +15,8 @@
         and (vmware_provisioner_vms_detailed_facts is not defined
              or vmware_provisioner_gather_detailed_vm_facts_force | bool)
 
-    - block:
+    - name: Provisione vmware vms
+      block:
         - include_tasks: >-
             vms_{{ vmware_provisioner_vms_provisioning_method }}.yml
 
